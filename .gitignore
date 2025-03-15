@@ -1,0 +1,31 @@
+# Ignorar node_modules en ambos directorios
+client/node_modules/
+server/node_modules/
+
+# Ignorar archivos de entorno (excepto .env.example)
+client/.env
+server/.env
+
+# Ignorar archivos generados por Prisma (backend)
+server/prisma/migrations/
+server/prisma/.env
+
+# Ignorar archivos de compilación (Next.js)
+client/.next/
+client/out/
+
+# Ignorar archivos de depuración y logs
+*.log
+*.tmp
+
+# Ignorar archivos de IDE (VSCode, IntelliJ, etc.)
+.vscode/
+.idea/
+
+# Ignorar archivos de sistema (macOS)
+.DS_Store
+
+# Ignorar archivos de dependencias (frontend y backend)
+client/.cache/
+client/.npm
+server/.npm

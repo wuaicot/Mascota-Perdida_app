@@ -1,0 +1,11 @@
+server/
+├── src/
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── petsController.js
+│   │   └── alertsController.js  // ¡Nuevo archivo!
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── pets.js (con importación corregida)
+│   │   └── alerts.js (con importación a alertsController)
+│   └── index.js
