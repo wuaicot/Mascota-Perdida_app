@@ -1,11 +1,25 @@
-server/
-├── src/
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── petsController.js
-│   │   └── alertsController.js  // ¡Nuevo archivo!
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── pets.js (con importación corregida)
-│   │   └── alerts.js (con importación a alertsController)
-│   └── index.js
+├── server
+│   ├── node_modules
+│   ├── prisma
+│   │   ├── migrations
+│   │   └── schema.prisma
+│   ├── src
+│   │   ├── controllers
+│   │   │   ├── alertsController.js
+│   │   │   ├── authController.js
+│   │   │   └── petsController.js
+│   │   ├── middleware
+│   │   │   └── authMiddleware.js
+│   │   ├── routes
+│   │   │   ├── alerts.js
+│   │   │   ├── auth.js
+│   │   │   └── pets.js
+│   │   ├── utils
+│   │   │   ├── email.js
+│   │   │   └── index.js
+│   ├── .env
+│   ├── .txt
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── .gitignore
+│   └── README.md

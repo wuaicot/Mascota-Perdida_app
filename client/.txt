@@ -19,4 +19,28 @@
 │ └── react@18.3.1 deduped
 └── react@18.3.1
 
-,
+----------------------------------------------
+
+MASCOTA-PERDIDA_APP
+├── client
+│   ├── .next
+│   ├── node_modules
+│   ├── src
+│   │   ├── components
+│   │   │   └── QRScanner.js
+│   │   ├── contexts
+│   │   ├── hooks
+│   │   ├── pages
+│   │   │   ├── api
+│   │   │   ├── auth
+│   │   │   ├── hero
+│   │   │   ├── owner
+│   │   │   └── index.js
+│   │   ├── styles
+│   ├── .env
+│   ├── eslint.config.mjs
+│   ├── jsconfig.json
+│   ├── next.config.mjs
+│   ├── package-lock.json
+│   ├── package.json
+│   └── postcss.config.mjs

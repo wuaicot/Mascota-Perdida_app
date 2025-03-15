@@ -1,0 +1,49 @@
+MASCOTA-PERDIDA_APP
+├── client/
+│   ├── .next
+│   ├── node_modules
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── QRScanner.js
+│   │   ├── contexts/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   │   ├── api/
+│   │   │   ├── auth/
+│   │   │   ├── hero/
+│   │   │   ├── owner/
+│   │   │   └── index.js
+│   │   ├── styles
+│   ├── .env
+│   ├── eslint.config.mjs
+│   ├── jsconfig.json
+│   ├── next.config.mjs
+│   ├── package-lock.json
+│   ├── package.json
+│   └── postcss.config.mjs
+├── server
+│   ├── node_modules
+│   ├── prisma/
+│   │   ├── migrations
+│   │   └── schema.prisma
+│   ├── src
+│   │   ├── controllers/
+│   │   │   ├── alertsController.js
+│   │   │   ├── authController.js
+│   │   │   └── petsController.js
+│   │   ├── middleware/
+│   │   │   └── authMiddleware.js
+│   │   ├── routes/
+│   │   │   ├── alerts.js
+│   │   │   ├── auth.js
+│   │   │   └── pets.js
+│   │   ├── utils/
+│   │   │   ├── email.js
+│   │   │   └── index.js
+│   ├── .env
+│   ├── .txt
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── .gitignore
+│   └── README.md
+-
