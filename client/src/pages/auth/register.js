@@ -1,4 +1,3 @@
-// client/src/pages/auth/register.js
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -22,18 +21,24 @@ export default function Register() {
       return setError('Las contraseñas no coinciden');
     }
 
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      return setError('Formato de email inválido');
+    }
+
     try {
       setLoading(true);
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
-        email: formData.email,
-        password: formData.password
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
+        {
+          email: formData.email,
+          password: formData.password
+        }
+      );
 
-      // Guardar token y redirigir
       localStorage.setItem('token', res.data.token);
       router.push('/owner/dashboard');
-    } catch (err) {
-      setError(err.response?.data?.error || 'Error al registrar usuario');
+    } catch (error) {
+      setError(error.response?.data?.error || 'Error al registrar usuario');
     } finally {
       setLoading(false);
     }
@@ -51,7 +56,7 @@ export default function Register() {
             </label>
             <input
               type="email"
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
               required
@@ -64,7 +69,7 @@ export default function Register() {
             </label>
             <input
               type="password"
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               minLength="6"
@@ -78,28 +83,32 @@ export default function Register() {
             </label>
             <input
               type="password"
-              className="w-full p-2 border rounded-md"
+              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
               value={formData.confirmPassword}
               onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
               required
             />
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && (
+            <div className="p-3 bg-red-50 text-red-700 rounded-md mt-4">
+              <p className="text-sm">{error}</p>
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400"
           >
-            {loading ? 'Registrando...' : 'Registrarse'}
+            {loading ? 'Registrando...' : 'Crear Cuenta'}
           </button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-6 text-center text-sm text-gray-600">
           ¿Ya tienes cuenta?{' '}
-          <Link href="/auth/login" className="text-blue-600 hover:text-blue-700">
-            Inicia Sesión
+          <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-medium">
+            Iniciar Sesión
           </Link>
         </p>
       </div>
