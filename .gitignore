@@ -29,3 +29,6 @@ client/out/
 client/.cache/
 client/.npm
 server/.npm
+
+# server/.gitignore
+/tmp/
