@@ -23,3 +23,8 @@
 │   ├── package.json
 │   ├── .gitignore
 │   └── README.md
+
+
+------------------------------------------------
+                CONTRASEÑA DE APLICACIÓN
+https://myaccount.google.com/apppasswords?rapt=AEjHL4Nu2UwCVfoaKZ8tBw6Tq77RbB1aJvNwHEH_GDHZWJ-dimwmnnON8qduOefbYVjla6PMjt6hsApTYtnWnjgBtYmtae8SZFWnjsw-01kAJ4-pIUM4f1A

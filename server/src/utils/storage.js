@@ -5,7 +5,10 @@ const path = require('path');
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
-  credentials: fromIni({ profile: 'default' }) // o usa credentials directamente
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  }
 });
 
 exports.uploadToS3 = async (filePath, fileName) => {
@@ -14,8 +17,7 @@ exports.uploadToS3 = async (filePath, fileName) => {
   const params = {
     Bucket: process.env.AWS_S3_BUCKET,
     Key: fileName,
-    Body: fileContent,
-    ACL: 'public-read',
+    Body: fileContent,    
     ContentType: getContentType(fileName)
   };
 
