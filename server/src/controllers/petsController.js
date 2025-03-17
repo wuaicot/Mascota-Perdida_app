@@ -1,4 +1,3 @@
-// server/src/controllers/petsController.js
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { sendFoundEmail } = require('../utils/email');
@@ -8,10 +7,15 @@ const { v4: uuidv4 } = require('uuid');
 exports.createPet = async (req, res) => {
   try {
     const { name, type, description } = req.body;
-    
+
     // Validación de campos requeridos
     if (!name || !type) {
       return res.status(400).json({ error: "Nombre y tipo son campos requeridos" });
+    }
+
+    // Validar tipo de mascota
+    if (!validatePetType(type)) {
+      return res.status(400).json({ error: "Tipo de mascota no válido. Use 'perro', 'gato' o 'otro'" });
     }
 
     // Manejo de la imagen
@@ -34,30 +38,33 @@ exports.createPet = async (req, res) => {
       include: {
         owner: {
           select: {
-            email: true,
-            id: true
+            email: true
           }
         }
       }
     });
 
     res.status(201).json({
-      id: pet.id,
-      name: pet.name,
-      qrId: pet.qrId,
-      photoUrl: pet.photoUrl,
-      ownerEmail: pet.owner.email
+      message: "Mascota registrada exitosamente",
+      pet: {
+        id: pet.id,
+        name: pet.name,
+        type: pet.type,
+        description: pet.description,
+        qrId: pet.qrId,
+        photoUrl: pet.photoUrl,
+        ownerEmail: pet.owner.email
+      }
     });
 
   } catch (error) {
-    console.error('Error creating pet:', error);
-    
-    // Manejo de errores de Prisma
+    console.error('Error al crear la mascota:', error);
+
     if (error.code === 'P2002') {
-      return res.status(400).json({ error: "Error de duplicación en la base de datos" });
+      return res.status(400).json({ error: "Mascota duplicada en la base de datos" });
     }
-    
-    res.status(500).json({ error: "Error al crear la mascota" });
+
+    res.status(500).json({ error: "Error interno al registrar la mascota" });
   }
 };
 
@@ -67,17 +74,13 @@ exports.getPetsByOwner = async (req, res) => {
       where: { ownerId: req.user.id },
       include: {
         alerts: {
-          orderBy: {
-            createdAt: 'desc'
-          },
+          orderBy: { createdAt: 'desc' },
           take: 5
         }
       },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: { createdAt: 'desc' }
     });
-    
+
     res.json(pets.map(pet => ({
       ...pet,
       alerts: pet.alerts.map(alert => ({
@@ -85,13 +88,10 @@ exports.getPetsByOwner = async (req, res) => {
         location: alert.location ? alert.location.split(',').map(Number) : null
       }))
     })));
-    
+
   } catch (error) {
-    console.error('Error fetching pets:', error);
-    res.status(500).json({ 
-      error: "Error obteniendo mascotas",
-      details: error.message
-    });
+    console.error('Error al obtener mascotas:', error);
+    res.status(500).json({ error: "Error al obtener mascotas" });
   }
 };
 
@@ -100,29 +100,19 @@ exports.markAsFound = async (req, res) => {
     const { qrId } = req.params;
     const { location } = req.body;
 
-    // Validar formato de ubicación
     if (!location || !location.match(/^-?\d+\.?\d*,-?\d+\.?\d*$/)) {
       return res.status(400).json({ error: "Formato de ubicación inválido" });
     }
 
     const pet = await prisma.pet.findUnique({
       where: { qrId },
-      include: { 
-        owner: {
-          select: {
-            email: true,
-            id: true
-          }
-        },
-        alerts: true
-      }
+      include: { owner: { select: { email: true } }, alerts: true }
     });
 
     if (!pet) {
       return res.status(404).json({ error: "Mascota no encontrada" });
     }
 
-    // Crear alerta de encontrado
     const newAlert = await prisma.alert.create({
       data: {
         petId: pet.id,
@@ -131,7 +121,6 @@ exports.markAsFound = async (req, res) => {
       }
     });
 
-    // Enviar notificación
     await sendFoundEmail(pet.owner.email, {
       petName: pet.name,
       location,
@@ -146,11 +135,8 @@ exports.markAsFound = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error marking as found:', error);
-    res.status(500).json({
-      error: "Error al procesar el hallazgo",
-      details: error.message
-    });
+    console.error('Error al marcar como encontrada:', error);
+    res.status(500).json({ error: "Error interno al procesar el hallazgo" });
   }
 };
 

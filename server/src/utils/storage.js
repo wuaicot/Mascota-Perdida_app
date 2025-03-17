@@ -1,8 +1,9 @@
 // server/src/utils/storage.js
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-const { fromIni } = require('@aws-sdk/credential-provider-ini');
+const fs = require('fs');
 const path = require('path');
 
+// Configuración única del cliente S3
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -11,35 +12,35 @@ const s3Client = new S3Client({
   }
 });
 
-exports.uploadToS3 = async (filePath, fileName) => {
-  const fileContent = require('fs').readFileSync(filePath);
-  
-  const params = {
-    Bucket: process.env.AWS_S3_BUCKET,
-    Key: fileName,
-    Body: fileContent,    
-    ContentType: getContentType(fileName)
-  };
-
-  try {
-    const data = await s3Client.send(new PutObjectCommand(params));
-    return `https://${params.Bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`;
-  } catch (err) {
-    console.error('Error S3 upload:', err);
-    throw err;
-  }
-};
-
-// ... mantener getContentType
-
-// Función auxiliar para determinar el tipo de contenido
+// Función para determinar el tipo MIME
 const getContentType = (fileName) => {
   const extension = fileName.split('.').pop().toLowerCase();
   const types = {
     jpg: 'image/jpeg',
     jpeg: 'image/jpeg',
     png: 'image/png',
-    gif: 'image/gif'
+    gif: 'image/gif',
+    webp: 'image/webp'
   };
   return types[extension] || 'application/octet-stream';
+};
+
+exports.uploadToS3 = async (filePath, fileName) => {
+  try {
+    const fileContent = fs.readFileSync(filePath);
+    
+    const params = {
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: fileName,
+      Body: fileContent,
+      ContentType: getContentType(fileName)
+    };
+
+    await s3Client.send(new PutObjectCommand(params));
+    return `https://${params.Bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`;
+    
+  } catch (error) {
+    console.error('Error en uploadToS3:', error);
+    throw new Error('Error al subir el archivo a S3');
+  }
 };
