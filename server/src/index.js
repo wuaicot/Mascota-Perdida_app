@@ -17,11 +17,11 @@ app.use(cors({
   origin: process.env.CLIENT_URL,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  credentials: true // Nuevo: Permitir credenciales
+  credentials: true 
 }));
 
 app.use(express.json({ limit: '5mb' }));
-app.use(cookieParser()); // Nuevo: Para manejar cookies
+app.use(cookieParser()); 
 
 // Configuración de subida de archivos
 app.use(fileUpload({

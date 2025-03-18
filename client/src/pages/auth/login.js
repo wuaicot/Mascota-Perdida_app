@@ -1,6 +1,9 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -32,8 +35,14 @@ export default function Login() {
   };
 
   return (
+    
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-96">
+      <Link href="/" className="flex items-center text-blue-600 hover:text-blue-800 mb-4">
+            <FaArrowLeft className="mr-2" />
+            Volver al inicio
+          </Link>
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Inicio de sesión Dueño</h2>
 
         {error && (
