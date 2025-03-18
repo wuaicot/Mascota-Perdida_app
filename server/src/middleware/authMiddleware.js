@@ -2,17 +2,23 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  
-  if (!token) {
-    return res.status(401).json({ error: "Acceso no autorizado. Token requerido." });
-  }
+  const token = req.header('Authorization')?.replace('Bearer ', '') 
+    || req.cookies?.jwt 
+    || req.query?.token;
+
+  if (!token) return res.status(401).json({ error: "Autenticación requerida" });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Guarda los datos del usuario en la solicitud
+    
+    // Asegurar que el ID sea un número entero
+    req.user = {
+      id: parseInt(decoded.id), // ¡Conversión crítica a número!
+      role: decoded.role
+    };
+    
     next();
   } catch (error) {
-    res.status(401).json({ error: "Token inválido o expirado" });
+    res.status(401).json({ error: "Token inválido" });
   }
 };

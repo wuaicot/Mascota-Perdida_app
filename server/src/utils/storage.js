@@ -1,9 +1,9 @@
-// server/src/utils/storage.js
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+//server/src/utils/storage.js
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
-// Configuración única del cliente S3
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -12,7 +12,6 @@ const s3Client = new S3Client({
   }
 });
 
-// Función para determinar el tipo MIME
 const getContentType = (fileName) => {
   const extension = fileName.split('.').pop().toLowerCase();
   const types = {
@@ -28,12 +27,13 @@ const getContentType = (fileName) => {
 exports.uploadToS3 = async (filePath, fileName) => {
   try {
     const fileContent = fs.readFileSync(filePath);
-    
+    const s3FileName = `pets/${uuidv4()}-${path.basename(fileName)}`;
+
     const params = {
       Bucket: process.env.AWS_S3_BUCKET,
-      Key: fileName,
+      Key: s3FileName,
       Body: fileContent,
-      ContentType: getContentType(fileName)
+      // Eliminado: ACL: 'public-read'
     };
 
     await s3Client.send(new PutObjectCommand(params));
@@ -41,6 +41,26 @@ exports.uploadToS3 = async (filePath, fileName) => {
     
   } catch (error) {
     console.error('Error en uploadToS3:', error);
-    throw new Error('Error al subir el archivo a S3');
+    throw error;
+  }
+};
+
+
+// Nueva función para eliminar imágenes
+exports.deleteFromS3 = async (fileUrl) => {
+  try {
+    const urlParts = fileUrl.split('/');
+    const key = urlParts.slice(3).join('/');
+
+    const params = {
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: key
+    };
+
+    await s3Client.send(new DeleteObjectCommand(params));
+    return true;
+  } catch (error) {
+    console.error('Error deleting from S3:', error);
+    throw error;
   }
 };

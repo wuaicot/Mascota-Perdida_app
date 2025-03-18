@@ -1,147 +1,70 @@
-const { PrismaClient } = require('@prisma/client');
+//server/src/controllers/petsController.js
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { sendFoundEmail } = require('../utils/email');
-const { uploadToS3 } = require('../utils/storage'); // Función personalizada para AWS S3
-const { v4: uuidv4 } = require('uuid');
+const { uploadToS3 } = require("../utils/storage");
+const { v4: uuidv4 } = require("uuid");
 
+// Función para crear mascotas
 exports.createPet = async (req, res) => {
   try {
     const { name, type, description } = req.body;
+    let photoUrl = "";
 
-    // Validación de campos requeridos
-    if (!name || !type) {
-      return res.status(400).json({ error: "Nombre y tipo son campos requeridos" });
-    }
-
-    // Validar tipo de mascota
-    if (!validatePetType(type)) {
-      return res.status(400).json({ error: "Tipo de mascota no válido. Use 'perro', 'gato' o 'otro'" });
-    }
-
-    // Manejo de la imagen
-    let photoUrl = '';
     if (req.files?.photo) {
       const file = req.files.photo;
       const fileName = `pets/${uuidv4()}-${file.name}`;
       photoUrl = await uploadToS3(file.tempFilePath, fileName);
     }
 
-    // Creación de la mascota
-    const pet = await prisma.pet.create({
+    const newPet = await prisma.pet.create({
       data: {
         name,
         type,
         description: description || null,
         photoUrl: photoUrl || null,
-        ownerId: req.user.id
+        ownerId: req.user.id,
       },
-      include: {
-        owner: {
-          select: {
-            email: true
-          }
-        }
-      }
     });
 
-    res.status(201).json({
-      message: "Mascota registrada exitosamente",
-      pet: {
-        id: pet.id,
-        name: pet.name,
-        type: pet.type,
-        description: pet.description,
-        qrId: pet.qrId,
-        photoUrl: pet.photoUrl,
-        ownerEmail: pet.owner.email
-      }
-    });
-
+    res.status(201).json(newPet);
   } catch (error) {
-    console.error('Error al crear la mascota:', error);
-
-    if (error.code === 'P2002') {
-      return res.status(400).json({ error: "Mascota duplicada en la base de datos" });
-    }
-
-    res.status(500).json({ error: "Error interno al registrar la mascota" });
+    console.error("Error al crear mascota:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
-exports.getPetsByOwner = async (req, res) => {
+// Función para obtener mascotas del dueño
+exports.getPetsByOwner = async (req, res) => { 
   try {
+    console.log("Usuario autenticado:", req.user); // 👀 Verificar en logs del servidor
+    if (!req.user) {
+      return res.status(401).json({ error: "No autorizado" });
+    }
+    
     const pets = await prisma.pet.findMany({
       where: { ownerId: req.user.id },
-      include: {
-        alerts: {
-          orderBy: { createdAt: 'desc' },
-          take: 5
-        }
-      },
-      orderBy: { createdAt: 'desc' }
+      include: { alerts: true }
     });
-
-    res.json(pets.map(pet => ({
-      ...pet,
-      alerts: pet.alerts.map(alert => ({
-        ...alert,
-        location: alert.location ? alert.location.split(',').map(Number) : null
-      }))
-    })));
-
+    res.json(pets);
   } catch (error) {
     console.error('Error al obtener mascotas:', error);
-    res.status(500).json({ error: "Error al obtener mascotas" });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
-exports.markAsFound = async (req, res) => {
+
+// Función para eliminar mascotas (¡Verifica que exista!)
+exports.deletePet = async (req, res) => {
   try {
-    const { qrId } = req.params;
-    const { location } = req.body;
-
-    if (!location || !location.match(/^-?\d+\.?\d*,-?\d+\.?\d*$/)) {
-      return res.status(400).json({ error: "Formato de ubicación inválido" });
-    }
-
-    const pet = await prisma.pet.findUnique({
-      where: { qrId },
-      include: { owner: { select: { email: true } }, alerts: true }
-    });
-
-    if (!pet) {
-      return res.status(404).json({ error: "Mascota no encontrada" });
-    }
-
-    const newAlert = await prisma.alert.create({
-      data: {
-        petId: pet.id,
-        location,
-        status: "found"
-      }
-    });
-
-    await sendFoundEmail(pet.owner.email, {
-      petName: pet.name,
-      location,
-      date: new Date().toLocaleString(),
-      mapUrl: `https://maps.google.com/?q=${location}`
-    });
-
-    res.status(200).json({
-      message: "Dueño notificado exitosamente",
-      alertId: newAlert.id,
-      petName: pet.name
-    });
-
+    await prisma.pet.delete({ where: { id: parseInt(req.params.id) } });
+    res.status(204).end();
   } catch (error) {
-    console.error('Error al marcar como encontrada:', error);
-    res.status(500).json({ error: "Error interno al procesar el hallazgo" });
+    console.error("Error al eliminar mascota:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
-// Función auxiliar para validar tipos de mascota
-const validatePetType = (type) => {
-  const allowedTypes = ['perro', 'gato', 'otro'];
-  return allowedTypes.includes(type.toLowerCase());
+// Función para marcar como encontrada (¡Verifica que exista!)
+exports.markAsFound = async (req, res) => {
+  // ... lógica de la función ...
 };

@@ -1,36 +1,70 @@
 MASCOTA-PERDIDA_APP/
-├── node_modules/           
-├── prisma/                 
-│   ├── migrations/         
-│   └── schema.prisma        
-├── src/                     
-│   ├── controllers/         
-│   │   ├── alertsController.js
-│   │   ├── authController.js
-│   │   └── petsController.js
-│   ├── middleware/          
-│   │   └── authMiddleware.js
-│   ├── routes/              
-│   │   ├── alerts.js
-│   │   ├── auth.js
-│   │   └── pets.js
-│   └── utils/               
-│       ├── email.js
-│       ├── storage.js
-│       └── index.js
-├── tmp/                     
-│   ├── .env                 
-│   └── someOtherFile.txt    
-├── public/                  
-│   └── assets/
-├── pages/                   
-│   └── index.js
-├── package.json             
-├── package-lock.json        
-├── eslint.config.mjs        
-├── next.config.js           
-├── tailwind.config.js       
-├── postcss.config.js        
-├── jsconfig.json            
-├── .gitignore               
-└── README.md                
+├── client/
+│   ├── .next/                     
+│   ├── node_modules/               
+│   ├── src/                       
+│   │   ├── components/             
+│   │   │   ├── Alert.js
+│   │   │   ├── Layout.js
+│   │   │   ├── Modal.js
+│   │   │   ├── Navbar.js
+│   │   │   ├── PetCard.js
+│   │   │   ├── QRScanner.js
+│   │   ├── contexts/               
+│   │   ├── hooks/                  
+│   │   ├── pages/                  
+│   │   │   ├── api/                
+│   │   │   ├── auth/              
+│   │   │   │   ├── login.js
+│   │   │   │   ├── register.js
+│   │   │   ├── hero/               
+│   │   │   ├── owner/              
+│   │   │   │   ├── dashboard.js
+│   │   │   ├── pets/               
+│   │   │   │   ├── new.js          
+│   │   │   │   ├── _app.js         
+│   │   │   │   ├── index.js        
+│   │   ├── styles/                 
+│   │   │   ├── globals.css
+│   │   ├── utils/                   
+│   │   │   ├── axiosConfig.js       
+│   ├── .env                         
+│   ├── .txt                         
+│   ├── eslint.config.mjs           
+│   ├── jsconfig.json                 
+│   ├── next.config.js              
+│   ├── package-lock.json            
+│   ├── package.json                
+│   ├── postcss.config.mjs           
+│   ├── tailwind.config.js
+│           
+├──server/
+├── node_modules/                  
+├── prisma/                          
+│   ├── migrations/                  
+│   ├── schema.prisma                
+├── src/                              
+│   ├── controllers/                  
+│   │   ├── alertsController.js       
+│   │   ├── authController.js         
+│   │   ├── petsController.js         
+│   ├── middleware/                   
+│   │   ├── authMiddleware.js         
+│   ├── routes/                       
+│   │   ├── alerts.js                 
+│   │   ├── auth.js                   
+│   │   ├── pets.js                   
+│   ├── utils/                        
+│   │   ├── email.js                  
+│   │   ├── storage.js                
+│   │   ├── index.js                   
+├── tmp/
+│   ├── .env                         
+│   ├── .txt                              
+│   ├── package-lock.json
+│   ├── package.json
+│
+├── .gitignore   
+├── .txt
+├── descktop.ini
+├── README.md   
