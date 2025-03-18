@@ -33,7 +33,7 @@ exports.uploadToS3 = async (filePath, fileName) => {
       Bucket: process.env.AWS_S3_BUCKET,
       Key: s3FileName,
       Body: fileContent,
-      // Eliminado: ACL: 'public-read'
+      
     };
 
     await s3Client.send(new PutObjectCommand(params));

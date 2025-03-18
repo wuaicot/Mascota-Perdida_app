@@ -12,6 +12,8 @@ const PetCard = ({ pet, onDelete }) => {
   const [imageError, setImageError] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
+  console.log("Imagen de la mascota:", pet.photoUrl); // Depuración
+
   const handleDelete = async () => {
     if (!confirm(`¿Seguro que quieres eliminar a ${pet.name} permanentemente?`)) return;
     
@@ -36,6 +38,7 @@ const PetCard = ({ pet, onDelete }) => {
   };
 
   const handleImageError = () => {
+    console.error("Error cargando imagen:", pet.photoUrl);
     setImageError(true);
   };
 
@@ -59,15 +62,16 @@ const PetCard = ({ pet, onDelete }) => {
       </button>
 
       {/* Contenedor de imagen */}
-      <div className="relative h-48 bg-gray-50">
+      <div className="relative h-48 w-full overflow-hidden bg-gray-50 rounded-t-xl">
         {!imageError && pet.photoUrl ? (
           <Image
             src={pet.photoUrl}
             alt={pet.name}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-300 hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority
+            unoptimized
             onError={handleImageError}
           />
         ) : (
