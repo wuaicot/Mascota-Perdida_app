@@ -3,10 +3,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "../../utils/axiosConfig";
 import Layout from "../../components/Layout";
+import PetCard from "../../components/PetCard";
 
 const Dashboard = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Función para actualizar el estado cuando se elimina una mascota
+  const handleDelete = (id) => {
+    setPets(pets.filter((pet) => pet.id !== id));
+  };
 
   useEffect(() => {
     const fetchPets = async () => {
@@ -17,17 +23,17 @@ const Dashboard = () => {
           setLoading(false);
           return;
         }
-        
+
         const res = await axios.get(`/api/pets`, {
           headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-          }
+            "X-Requested-With": "XMLHttpRequest",
+          },
         });
         setPets(res.data);
-        setLoading(false); // ✅ Asegurar que deje de cargar
+        setLoading(false);
       } catch (error) {
         console.error("Error:", error.response?.data);
-        setLoading(false); // ✅ También en caso de error
+        setLoading(false);
       }
     };
     fetchPets();
@@ -43,8 +49,6 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      {" "}
-      {/* Si usas un layout */}
       <div className="p-8 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
@@ -65,31 +69,7 @@ const Dashboard = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pets.map((pet) => (
-              <div
-                key={pet.id}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-              >
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    {pet.name}
-                  </h3>
-                  <p className="text-sm text-gray-500 mb-4 capitalize">
-                    Especie: {pet.type}
-                  </p>
-                  <div className="flex justify-between items-center">
-                    <Link
-                      href={`/pets/${pet.id}/alerts`}
-                      className="text-blue-500 hover:text-blue-600 text-sm"
-                    >
-                      Ver alertas
-                    </Link>
-                    <span className="text-xs text-gray-400">
-                      Registrado el:{" "}
-                      {new Date(pet.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <PetCard key={pet.id} pet={pet} onDelete={handleDelete} />
             ))}
           </div>
         )}

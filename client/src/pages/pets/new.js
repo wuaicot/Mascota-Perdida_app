@@ -1,3 +1,4 @@
+//client/src/pages/pets/new.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -20,7 +21,7 @@ const PetForm = () => {
     if(!localStorage.getItem('jwt')) {
       router.push('/auth/login');
     }
-  }, []);
+  }, [router]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -115,19 +116,19 @@ const PetForm = () => {
           </div>
 
           {/* Campo Tipo */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tipo de mascota *
-            </label>
-            <select
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-              value={form.type}
-              onChange={(e) => setForm({ ...form, type: e.target.value })}
-            >
-              <option value="perro"><FaDog className="inline mr-2" /> Perro</option>
-              <option value="gato"><FaCat className="inline mr-2" /> Gato</option>
-            </select>
-          </div>
+          <div className="flex items-center space-x-2">
+  {form.type === "perro" ? <FaDog /> : <FaCat />}
+  <select
+    className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+    value={form.type}
+    onChange={(e) => setForm({ ...form, type: e.target.value })}
+  >
+    <option value="perro">Perro</option>
+    <option value="gato">Gato</option>
+  </select>
+</div>
+
+
 
           {/* Campo Descripción */}
           <div>

@@ -1,3 +1,4 @@
+//client/src/components/PetCard.js
 import Image from 'next/image';
 import { useState } from 'react';
 import { FaDog, FaCat, FaTrash, FaInfoCircle, FaRegSadTear } from 'react-icons/fa';
@@ -12,7 +13,7 @@ const PetCard = ({ pet, onDelete }) => {
   const [imageError, setImageError] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
-  console.log("Imagen de la mascota:", pet.photoUrl); // Depuración
+  console.log("Imagen de la mascota:", pet.photoUrl); // Para depuración
 
   const handleDelete = async () => {
     if (!confirm(`¿Seguro que quieres eliminar a ${pet.name} permanentemente?`)) return;
@@ -130,3 +131,4 @@ const PetCard = ({ pet, onDelete }) => {
 };
 
 export default PetCard;
+
