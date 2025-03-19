@@ -31,4 +31,4 @@ client/.npm
 server/.npm
 
 # server/.gitignore
-/tmp/
+tmp/
