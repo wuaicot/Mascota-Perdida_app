@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { FaDog, FaCat, FaTrash, FaInfoCircle, FaRegSadTear } from 'react-icons/fa';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -19,20 +21,34 @@ const PetCard = ({ pet, onDelete }) => {
     if (!confirm(`¿Seguro que quieres eliminar a ${pet.name} permanentemente?`)) return;
     
     try {
-      setIsDeleting(true);
-      await axios.delete(`${API_BASE_URL}/api/pets/${pet.id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwt')}`
-        }
-      });
-      onDelete(pet.id);
+        setIsDeleting(true);
+
+        await axios.delete(`${API_BASE_URL}/api/pets/${pet.id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`
+            }
+        });
+
+        // 🗑️ Mostrar efecto de éxito y reproducir sonido de eliminación
+        toast.success("Mascota eliminada con éxito");
+
+        // 🎶 Reproducir sonido de eliminación
+        const deleteSound = new Audio('/sdeleted.mp3');
+        deleteSound.play().catch(err => console.error("Error al reproducir sonido:", err));
+
+        // ⏳ Pequeño delay para efectos visuales antes de actualizar la UI (opcional)
+        setTimeout(() => {
+            onDelete(pet.id);
+        }, 500);
+
     } catch (error) {
-      console.error('Error eliminando mascota:', error);
-      alert(error.response?.data?.error || 'Error al eliminar la mascota');
+        console.error('Error eliminando mascota:', error);
+        toast.error(error.response?.data?.error || 'Error al eliminar la mascota');
     } finally {
-      setIsDeleting(false);
+        setIsDeleting(false);
     }
-  };
+};
+
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -47,7 +63,12 @@ const PetCard = ({ pet, onDelete }) => {
   const typeColor = pet.type === 'perro' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800';
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
+    <motion.div
+      className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.3 } }}
+    >
       {/* Botón de eliminación */}
       <button
         onClick={handleDelete}
@@ -126,9 +147,10 @@ const PetCard = ({ pet, onDelete }) => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 export default PetCard;
+
 

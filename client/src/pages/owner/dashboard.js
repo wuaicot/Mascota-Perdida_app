@@ -4,6 +4,9 @@ import Link from "next/link";
 import axios from "../../utils/axiosConfig";
 import Layout from "../../components/Layout";
 import PetCard from "../../components/PetCard";
+import { AnimatePresence } from "framer-motion";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
   const [pets, setPets] = useState([]);
@@ -11,7 +14,7 @@ const Dashboard = () => {
 
   // Función para actualizar el estado cuando se elimina una mascota
   const handleDelete = (id) => {
-    setPets(pets.filter((pet) => pet.id !== id));
+    setPets((prevPets) => prevPets.filter((pet) => pet.id !== id));
   };
 
   useEffect(() => {
@@ -49,6 +52,8 @@ const Dashboard = () => {
 
   return (
     <Layout>
+      {/* Contenedor para notificaciones */}
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="p-8 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
@@ -68,9 +73,11 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pets.map((pet) => (
-              <PetCard key={pet.id} pet={pet} onDelete={handleDelete} />
-            ))}
+            <AnimatePresence>
+              {pets.map((pet) => (
+                <PetCard key={pet.id} pet={pet} onDelete={handleDelete} />
+              ))}
+            </AnimatePresence>
           </div>
         )}
       </div>
@@ -79,3 +86,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

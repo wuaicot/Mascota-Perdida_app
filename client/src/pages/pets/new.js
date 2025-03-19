@@ -1,11 +1,15 @@
-//client/src/pages/pets/new.js
+// client/src/pages/pets/new.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { FaDog, FaCat, FaUpload, FaArrowLeft, FaSignOutAlt } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
 
 const PetForm = () => {
   const router = useRouter();
+  const { width, height } = useWindowSize();
   const [form, setForm] = useState({ 
     name: '', 
     type: 'perro', 
@@ -15,6 +19,7 @@ const PetForm = () => {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState('');
   const [error, setError] = useState('');
+  const [showConfetti, setShowConfetti] = useState(false);
 
   // Verificar autenticación
   useEffect(() => {
@@ -58,7 +63,17 @@ const PetForm = () => {
         }
       });
 
-      router.push('/owner/dashboard');
+      // Mostrar efecto de confetti y reproducir trompeta
+      toast.success("Mascota registrada con éxito");
+      setShowConfetti(true);
+      const audio = new Audio('/trumpet.mp3'); // Asegúrate de colocar 'trumpet.mp3' en la carpeta public
+      audio.play();
+
+      //tiempo de duración del confetti
+      setTimeout(() => {
+        setShowConfetti(false);
+        router.push('/owner/dashboard');
+      }, 3500);
     } catch (error) {
       setError(error.response?.data?.error || 'Error al registrar la mascota');
     } finally {
@@ -67,7 +82,10 @@ const PetForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-8 relative">
+      {/* Confetti de fanfarria */}
+      {showConfetti && <Confetti width={width} height={height} recycle={false} numberOfPieces={500} />}
+      
       {/* Header de navegación */}
       <div className="max-w-2xl mx-auto mb-6 flex justify-between items-center">
         <button 
@@ -116,19 +134,22 @@ const PetForm = () => {
           </div>
 
           {/* Campo Tipo */}
-          <div className="flex items-center space-x-2">
-  {form.type === "perro" ? <FaDog /> : <FaCat />}
-  <select
-    className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-    value={form.type}
-    onChange={(e) => setForm({ ...form, type: e.target.value })}
-  >
-    <option value="perro">Perro</option>
-    <option value="gato">Gato</option>
-  </select>
-</div>
-
-
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tipo de mascota *
+            </label>
+            <div className="flex items-center space-x-2">
+              {form.type === "perro" ? <FaDog /> : <FaCat />}
+              <select
+                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                value={form.type}
+                onChange={(e) => setForm({ ...form, type: e.target.value })}
+              >
+                <option value="perro">Perro</option>
+                <option value="gato">Gato</option>
+              </select>
+            </div>
+          </div>
 
           {/* Campo Descripción */}
           <div>
