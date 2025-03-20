@@ -19,7 +19,7 @@ const LostPetsMap = dynamic(() => import("../../components/LostPetsMap"), {
 const Timeline = () => {
   return (
     
-    <div className="p-4 bg-white shadow rounded-lg">
+    <div className="p-4 bg-slate-100 shadow rounded-lg">
       <h2 className="text-xl font-semibold mb-2">Seguimiento del proceso</h2>
       <ul className="space-y-4">
         <li>
@@ -86,7 +86,7 @@ const DashboardHeroe = () => {
   return (
     
     
-    <div className="min-h-screen bg-purple-300 p-4">
+    <div className="min-h-screen bg-purple-200 p-4">
       <div><Link
     href="/"
     className="flex items-center text-blue-600 hover:text-blue-800 mb-4"
@@ -107,7 +107,7 @@ const DashboardHeroe = () => {
       <div className="space-y-8">
         
         {/* Sección: Escaneo de código QR */}
-        <section className="bg-white p-4 rounded-lg shadow">
+        <section className="bg-slate-100 p-4 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-2">Escanear código QR</h2>
           <p className="text-gray-600 mb-4">
             Utiliza la cámara para escanear el código QR del collar y notificar
@@ -117,7 +117,7 @@ const DashboardHeroe = () => {
         </section>
 
         {/* Sección: Mapa / Alternador de vistas */}
-        <section className="bg-white p-4 rounded-lg shadow">
+        <section className="bg-slate-100 p-4 rounded-lg shadow">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Mascotas Perdidas</h2>
             <div>
@@ -162,7 +162,7 @@ const DashboardHeroe = () => {
         </section>
 
         {/* Sección: Carrusel de publicidad */}
-        <section className="bg-white p-4 rounded-lg shadow">
+        <section className="bg-orange-500 p-4 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-2">Publicidad</h2>
           <AdCarousel />
         </section>
