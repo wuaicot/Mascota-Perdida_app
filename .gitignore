@@ -29,6 +29,5 @@ client/out/
 client/.cache/
 client/.npm
 server/.npm
+server/tmp/
 
-# server/.gitignore
-tmp/

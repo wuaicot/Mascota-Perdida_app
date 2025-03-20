@@ -1,4 +1,3 @@
-//server/src/index.js
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
@@ -12,16 +11,23 @@ const alertRoutes = require('./routes/alerts');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Determinar el origen permitido
+const allowedOrigin = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:3000'
+  : process.env.CLIENT_URL;
+
+console.log("Allowed origin:", allowedOrigin); // <-- Aquí se imprime el origen permitido
+
 // Middlewares actualizados
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: allowedOrigin,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true 
 }));
 
 app.use(express.json({ limit: '5mb' }));
-app.use(cookieParser()); 
+app.use(cookieParser());
 
 // Configuración de subida de archivos
 app.use(fileUpload({
