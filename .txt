@@ -3,9 +3,11 @@ MASCOTA-PERDIDA_APP/
 │   ├── .next/                     
 │   ├── node_modules/               
 │   ├── src/                       
-│   │   ├── components/             
+│   │   ├── components/ 
+│   │   │   ├── AdCarpusel.js
 │   │   │   ├── Alert.js
 │   │   │   ├── Layout.js
+│   │   │   ├── LostPetsMap.js
 │   │   │   ├── Modal.js
 │   │   │   ├── Navbar.js
 │   │   │   ├── PetCard.js
@@ -17,7 +19,8 @@ MASCOTA-PERDIDA_APP/
 │   │   │   ├── auth/              
 │   │   │   │   ├── login.js
 │   │   │   │   ├── register.js
-│   │   │   ├── hero/               
+│   │   │   ├── heroe/ 
+│   │   │   │   ├── dashboardheroe.js              
 │   │   │   ├── owner/              
 │   │   │   │   ├── dashboard.js
 │   │   │   ├── pets/               
