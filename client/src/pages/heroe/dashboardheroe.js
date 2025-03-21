@@ -4,70 +4,104 @@ import QRScanner from "../../components/QRScanner";
 import AdCarousel from "../../components/AdCarousel";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
+import NavBarHeroe from "../../components/NavBarHeroe";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
-
-// Se importa el mapa de manera dinámica (sin SSR) para evitar errores de renderizado
 const LostPetsMap = dynamic(() => import("../../components/LostPetsMap"), {
   ssr: false,
 });
 
-
- 
-
-// Componente de línea de tiempo para seguir el proceso de devolución de la mascota
-
 const Timeline = () => {
   return (
-    
     <div className="p-4 bg-slate-100 shadow rounded-lg">
       <h2 className="text-xl font-semibold mb-2">Seguimiento del proceso</h2>
       <ul className="space-y-4">
-        <li>
-          <div className="flex items-center">
-            <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
-            <span>Mascota encontrada</span>
-          </div>
-          <p className="ml-6 text-gray-600 text-sm">
-            La mascota fue escaneada y reportada.
-          </p>
-        </li>
-        <li>
-          <div className="flex items-center">
-            <div className="w-4 h-4 bg-yellow-500 rounded-full mr-2"></div>
-            <span>Dueño notificado</span>
-          </div>
-          <p className="ml-6 text-gray-600 text-sm">
-            Se envió la notificación al dueño.
-          </p>
-        </li>
-        <li>
-          <div className="flex items-center">
-            <div className="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
-            <span>Proceso en curso</span>
-          </div>
-          <p className="ml-6 text-gray-600 text-sm">
-            Esperando confirmación de entrega.
-          </p>
-        </li>
-        <li>
-          <div className="flex items-center">
-            <div className="w-4 h-4 bg-gray-500 rounded-full mr-2"></div>
-            <span>Mascota devuelta</span>
-          </div>
-          <p className="ml-6 text-gray-600 text-sm">
-            La mascota ha sido entregada al dueño.
-          </p>
-        </li>
+        {[
+          {
+            status: "Mascota encontrada",
+            color: "green",
+            desc: "La mascota fue escaneada y reportada.",
+          },
+          {
+            status: "Dueño notificado",
+            color: "yellow",
+            desc: "Se envió la notificación al dueño.",
+          },
+          {
+            status: "Proceso en curso",
+            color: "blue",
+            desc: "Esperando confirmación de entrega.",
+          },
+          {
+            status: "Mascota devuelta",
+            color: "gray",
+            desc: "La mascota ha sido entregada al dueño.",
+          },
+        ].map((step, index) => (
+          <li key={index}>
+            <div className="flex items-center">
+              <div
+                className={`w-4 h-4 bg-${step.color}-500 rounded-full mr-2`}
+              ></div>
+              <span>{step.status}</span>
+            </div>
+            <p className="ml-6 text-gray-600 text-sm">{step.desc}</p>
+          </li>
+        ))}
       </ul>
     </div>
   );
 };
 
-const DashboardHeroe = () => {
-  // Estado para alternar entre la vista de escáner y la de mapa
-  const [view, setView] = useState("scanner"); // 'scanner' o 'map'
+const FancyHello = () => {
+  return (
+    <div className="flex flex-col items-center justify-center text-white py-10">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1 }}
+      >
+        <Image
+          src="/ads/hello-icon.png"
+          alt="Hello"
+          width={100}
+          height={100}
+          
+          className="drop-shadow-lg"
+        />
+      </motion.div>
 
-  // Datos simulados para el mapa (debe reemplazarse con datos reales)
+      <motion.h1
+        className="text-5xl font-extrabold text-center mt-4 mb-4"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        ¡HOLA!
+      </motion.h1>
+
+      <motion.p
+        className="text-lg text-center mt-2 px-6 py-2 bg-black bg-opacity-30 rounded-lg shadow-lg neon-glow"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 1 }}
+      >
+        Bienvenido a la comunidad de héroes 
+      </motion.p>
+
+      <style jsx>{`
+        .neon-glow {
+          text-shadow: 0 0 5px #fff, 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const DashboardHeroe = () => {
+  const [view, setView] = useState("scanner");
+
   const lostPets = [
     {
       id: 1,
@@ -84,30 +118,15 @@ const DashboardHeroe = () => {
   ];
 
   return (
-    
-    
-    <div className="min-h-screen bg-purple-200 p-4">
-      <div><Link
-    href="/"
-    className="flex items-center text-blue-600 hover:text-blue-800 mb-4"
-  >
-    <FaArrowLeft className="mr-2" />
-    Volver al inicio
-  </Link> 
-</div> 
-      
-
-
-      {/* Encabezado */}
-      <header className="mb-6">
-        <h1 className="text-3xl font-bold text-center">Dashboard del Héroe</h1>
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-4 text-white">
+      <header>
+        <NavBarHeroe />
       </header>
-      
+
+      <FancyHello />
 
       <div className="space-y-8">
-        
-        {/* Sección: Escaneo de código QR */}
-        <section className="bg-slate-100 p-4 rounded-lg shadow">
+        <section className="bg-slate-100 p-4 rounded-lg shadow text-black">
           <h2 className="text-xl font-semibold mb-2">Escanear código QR</h2>
           <p className="text-gray-600 mb-4">
             Utiliza la cámara para escanear el código QR del collar y notificar
@@ -116,8 +135,7 @@ const DashboardHeroe = () => {
           <QRScanner />
         </section>
 
-        {/* Sección: Mapa / Alternador de vistas */}
-        <section className="bg-slate-100 p-4 rounded-lg shadow">
+        <section className="bg-slate-100 p-4 rounded-lg shadow text-black">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Mascotas Perdidas</h2>
             <div>
@@ -156,27 +174,29 @@ const DashboardHeroe = () => {
           )}
         </section>
 
-        {/* Sección: Línea de tiempo */}
         <section>
           <Timeline />
         </section>
 
-        {/* Sección: Carrusel de publicidad */}
-        <section className="bg-orange-500 p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-2">Publicidad</h2>
+        <section className="bg-orange-500 p-4 rounded-lg shadow w-auto h-auto text-black">
+          <h2 className="text-xl text-white font-bold mb-2">
+            Tienda Super-Collar
+          </h2>
           <AdCarousel />
         </section>
-        
       </div>
-      
+
+      <div>
+        <Link
+          href="/"
+          className="flex items-center text-blue-300 hover:text-blue-500 mb-4"
+        >
+          <FaArrowLeft className="mr-2" />
+          Volver al inicio
+        </Link>
+      </div>
     </div>
-    
   );
-  
 };
 
-
 export default DashboardHeroe;
-
-
-  
