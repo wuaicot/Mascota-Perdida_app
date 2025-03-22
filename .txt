@@ -23,10 +23,10 @@ MASCOTA-PERDIDA_APP/
 │   │   │   │   ├── dashboardheroe.js              
 │   │   │   ├── owner/              
 │   │   │   │   ├── dashboard.js
-│   │   │   ├── pets/               
-│   │   │   │   ├── new.js          
+│   │   │   ├── pets/     
 │   │   │   │   ├── _app.js         
 │   │   │   │   ├── index.js        
+│   │   │   │          
 │   │   ├── styles/                 
 │   │   │   ├── globals.css
 │   │   ├── utils/                   

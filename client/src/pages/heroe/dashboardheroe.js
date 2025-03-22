@@ -1,4 +1,5 @@
-//client/src/pages/heroe/dashboardheroe.js
+//client/src/pages/heroe/dashboardheroe.jS
+//-----------------------------------------
 
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
@@ -182,9 +183,18 @@ const DashboardHeroe = () => {
         </section>
 
         <section className="bg-orange-500 p-4 rounded-lg shadow w-auto h-auto text-black">
-          <h2 className="text-xl text-white font-bold mb-2">
-            Tienda Super-Collar
+
+        <Link
+          href="https://w-collar-pets-store.vercel.app/"
+          className="flex items-center text-blue-300 hover:text-blue-900 mb-4"
+        >
+          <FaArrowLeft className="mr-2" />
+          <h2 className="text-xl text-white font-bold mb-2 animate-pulse ">
+            Tienda Super-Collar 🎁
           </h2>
+        </Link>
+
+          
           <AdCarousel />
         </section>
       </div>
@@ -192,10 +202,10 @@ const DashboardHeroe = () => {
       <div>
         <Link
           href="/"
-          className="flex items-center text-blue-300 hover:text-blue-500 mb-4"
+          className="flex items-center text-white hover:text-blue-00 mb-4  "
         >
-          <FaArrowLeft className="mr-2" />
-          Volver al inicio
+           <FaArrowLeft className="mr-4 mt-2" />
+          <span className="mt-2 animate-pulse">Volver al inicio</span>
         </Link>
       </div>
     </div>
@@ -203,3 +213,5 @@ const DashboardHeroe = () => {
 };
 
 export default DashboardHeroe;
+
+
