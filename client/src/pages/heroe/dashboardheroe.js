@@ -1,4 +1,5 @@
 //client/src/pages/heroe/dashboardheroe.js
+
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import QRScanner from "../../components/QRScanner";
@@ -126,9 +127,9 @@ const DashboardHeroe = () => {
       <FancyHello />
 
       <div className="space-y-8">
-        <section className="bg-slate-100 p-4 rounded-lg shadow text-black">
-          <h2 className="text-xl font-semibold mb-2">Escanear código QR</h2>
-          <p className="text-gray-600 mb-4">
+        <section className="bg-blue-950 p-4 rounded-lg shadow text-black">
+          <h2 className="text-xl text-white  font-semibold mb-2 justify-center flex">Escanear el código QR.</h2>
+          <p className="text-white mb-4">
             Utiliza la cámara para escanear el código QR del collar y notificar
             al dueño.
           </p>

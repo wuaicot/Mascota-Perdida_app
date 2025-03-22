@@ -67,7 +67,7 @@ const QRScanner = () => {
       {!isScanning && (
         <button
         onClick={startScan}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline animate-bounce "
       >
         <QrCodeIcon sx={{ fontSize: 24, mr: 1, verticalAlign: 'middle' }} />
         Escanear Código QR
