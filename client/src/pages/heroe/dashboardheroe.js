@@ -63,11 +63,10 @@ const FancyHello = () => {
         transition={{ duration: 1 }}
       >
         <Image
-          src="/ads/hello-icon.png"
+          src="/hello-icon.png"
           alt="Hello"
           width={100}
           height={100}
-          
           className="drop-shadow-lg"
         />
       </motion.div>
@@ -87,7 +86,7 @@ const FancyHello = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
-        Bienvenido a la comunidad de héroes 
+        Bienvenido a la comunidad de héroes
       </motion.p>
 
       <style jsx>{`
