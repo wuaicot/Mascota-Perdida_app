@@ -58,7 +58,7 @@ const Timeline = () => {
 
 const FancyHello = () => {
   return (
-    <div className="flex flex-col items-center justify-center text-white py-10">
+    <div className="flex bg-black/40 flex-col items-center justify-center rounded-3xl  text-white py-0 mt-4 mb-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -67,10 +67,12 @@ const FancyHello = () => {
         <Image
           src="/ads/hello-img.png"
           alt="Hello"
-          width={200}
-          height={200}
+          width={100}
+          height={100}
           priority={true}
+          backgroundSize="cover"                   
         />
+
       </motion.div>
 
       <motion.h1
@@ -80,10 +82,10 @@ const FancyHello = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         ¡HOLA!
-      </motion.h1>
+      </motion.h1 >
 
       <motion.p
-        className="text-lg text-center mt-2 px-6 py-2 bg-black bg-opacity-30 rounded-lg shadow-lg neon-glow"
+        className="text-lg text-center mt-4 mb-1  px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl shadow-lg neon-glow"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
@@ -119,19 +121,19 @@ const DashboardHeroe = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-4 text-white">
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-2 text-white  ">
       <header>
         <NavBarHeroe />
       </header>
 
-      <FancyHello />
+      <di><FancyHello/></di>
 
       <div className="space-y-8">
-        <section className="bg-blue-950 p-4 rounded-lg shadow text-black">
+        <section className="bg-blue-950 p-4 rounded-3xl shadow text-black">
           <h2 className="text-xl text-white  font-semibold mb-2 justify-center flex">Escanear el código QR.</h2>
           <p className="text-white mb-4">
             Utiliza la cámara para escanear el código QR del collar y notificar
-            al dueño.
+            al dueño
           </p>
           <QRScanner />
         </section>
