@@ -1,3 +1,4 @@
+//client/src/pages/heroe/dashboardheroe.js
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import QRScanner from "../../components/QRScanner";
@@ -63,11 +64,11 @@ const FancyHello = () => {
         transition={{ duration: 1 }}
       >
         <Image
-          src="/hello-icon.png"
+          src="/ads/hello-img.png"
           alt="Hello"
-          width={100}
-          height={100}
-          className="drop-shadow-lg"
+          width={200}
+          height={200}
+          priority={true}
         />
       </motion.div>
 
