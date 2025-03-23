@@ -31,3 +31,4 @@ client/.npm
 server/.npm
 server/tmp/
 
+server/config/lost-pet-app-fb-firebase.json

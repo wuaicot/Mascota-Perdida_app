@@ -1,54 +1,56 @@
 //client/src/components/PetCard.js
-import Image from 'next/image';
-import { useState } from 'react';
-import { FaDog, FaCat, FaTrash, FaInfoCircle, FaRegSadTear } from 'react-icons/fa';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+import Image from "next/image";
+import { useState } from "react";
+import { FaDog, FaCat, FaTrash, FaInfoCircle, FaRegSadTear } from "react-icons/fa";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import HeroContactModal from "./HeroContactModal"; // Modal para mostrar la info del Héroe
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 const PetCard = ({ pet, onDelete }) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [showHeroModal, setShowHeroModal] = useState(false);
+  const [heroContact, setHeroContact] = useState(null);
 
   console.log("Imagen de la mascota:", pet.photoUrl); // Para depuración
 
   const handleDelete = async () => {
     if (!confirm(`¿Seguro que quieres eliminar a ${pet.name} permanentemente?`)) return;
-    
+
     try {
-        setIsDeleting(true);
+      setIsDeleting(true);
 
-        await axios.delete(`${API_BASE_URL}/api/pets/${pet.id}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('jwt')}`
-            }
-        });
+      await axios.delete(`${API_BASE_URL}/api/pets/${pet.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+      });
 
-        // 🗑️ Mostrar efecto de éxito y reproducir sonido de eliminación
-        toast.success("Mascota eliminada con éxito");
+      toast.success("Mascota eliminada con éxito");
 
-        // 🎶 Reproducir sonido de eliminación
-        const deleteSound = new Audio('/sdeleted.mp3');
-        deleteSound.play().catch(err => console.error("Error al reproducir sonido:", err));
+      // Reproducir sonido de eliminación
+      const deleteSound = new Audio("/sdeleted.mp3");
+      deleteSound.play().catch((err) =>
+        console.error("Error al reproducir sonido:", err)
+      );
 
-        // ⏳ Pequeño delay para efectos visuales antes de actualizar la UI (opcional)
-        setTimeout(() => {
-            onDelete(pet.id);
-        }, 500);
-
+      setTimeout(() => {
+        onDelete(pet.id);
+      }, 500);
     } catch (error) {
-        console.error('Error eliminando mascota:', error);
-        toast.error(error.response?.data?.error || 'Error al eliminar la mascota');
+      console.error("Error eliminando mascota:", error);
+      toast.error(error.response?.data?.error || "Error al eliminar la mascota");
     } finally {
-        setIsDeleting(false);
+      setIsDeleting(false);
     }
-};
-
+  };
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -59,8 +61,30 @@ const PetCard = ({ pet, onDelete }) => {
     setImageError(true);
   };
 
-  const TypeIcon = pet.type === 'perro' ? FaDog : FaCat;
-  const typeColor = pet.type === 'perro' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800';
+  // Función para mostrar el modal con la info del Héroe
+  const handleShowHeroModal = async () => {
+    // Aquí se simula la obtención de los datos del Héroe.
+    // En una implementación real, podrías hacer una llamada a una API para obtener los datos.
+    const dummyHeroContact = {
+      name: "Juan Pérez",
+      email: "juan.perez@example.com",
+      whatsapp: "1234567890",
+    };
+
+    setHeroContact(dummyHeroContact);
+    setShowHeroModal(true);
+  };
+
+  const closeHeroModal = () => {
+    setShowHeroModal(false);
+    setHeroContact(null);
+  };
+
+  const TypeIcon = pet.type === "perro" ? FaDog : FaCat;
+  const typeColor =
+    pet.type === "perro"
+      ? "bg-blue-100 text-blue-800"
+      : "bg-orange-100 text-orange-800";
 
   return (
     <motion.div
@@ -74,9 +98,9 @@ const PetCard = ({ pet, onDelete }) => {
         onClick={handleDelete}
         disabled={isDeleting}
         className={`absolute top-3 right-3 p-2 rounded-full z-20 transition-all ${
-          isDeleting 
-            ? 'bg-gray-400 cursor-not-allowed' 
-            : 'bg-red-500 hover:bg-red-600'
+          isDeleting
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-red-500 hover:bg-red-600"
         }`}
         aria-label="Eliminar mascota"
       >
@@ -107,8 +131,12 @@ const PetCard = ({ pet, onDelete }) => {
       {/* Contenido de la tarjeta */}
       <div className="p-4">
         <div className="flex items-start justify-between mb-3">
-          <h3 className="text-xl font-semibold text-gray-800 truncate">{pet.name}</h3>
-          <span className={`${typeColor} px-3 py-1 rounded-full text-sm min-w-[70px] text-center`}>
+          <h3 className="text-xl font-semibold text-gray-800 truncate">
+            {pet.name}
+          </h3>
+          <span
+            className={`${typeColor} px-3 py-1 rounded-full text-sm min-w-[70px] text-center`}
+          >
             <TypeIcon className="inline-block mr-1" />
             {pet.type}
           </span>
@@ -116,7 +144,7 @@ const PetCard = ({ pet, onDelete }) => {
 
         {pet.description && (
           <div className="mb-4">
-            <p className={`text-gray-600 ${showFullDescription ? '' : 'line-clamp-2'}`}>
+            <p className={`text-gray-600 ${showFullDescription ? "" : "line-clamp-2"}`}>
               {pet.description}
             </p>
             {pet.description.length > 100 && (
@@ -124,7 +152,7 @@ const PetCard = ({ pet, onDelete }) => {
                 onClick={toggleDescription}
                 className="text-blue-600 hover:text-blue-800 text-sm mt-1"
               >
-                {showFullDescription ? 'Ver menos' : 'Ver más'}
+                {showFullDescription ? "Ver menos" : "Ver más"}
               </button>
             )}
           </div>
@@ -132,21 +160,31 @@ const PetCard = ({ pet, onDelete }) => {
 
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-500">
-            Registrado: {new Date(pet.createdAt).toLocaleDateString('es-ES', {
-              day: '2-digit',
-              month: 'long',
-              year: 'numeric'
+            Registrado:{" "}
+            {new Date(pet.createdAt).toLocaleDateString("es-ES", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
             })}
           </span>
+          {/* Botón de alerta: en lugar de redirigir, muestra el modal con la info del Héroe */}
           <button
-            onClick={() => router.push(`/pets/${pet.id}`)}
-            className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+            onClick={handleShowHeroModal}
+            className="flex items-center text-blue-900 hover:text-blue-800 transition-colors"
           >
             <FaInfoCircle className="mr-1" />
-            Detalles
+            Alerta
           </button>
         </div>
       </div>
+
+      {showHeroModal && heroContact && (
+        <HeroContactModal
+          isOpen={showHeroModal}
+          onClose={closeHeroModal}
+          heroContact={heroContact}
+        />
+      )}
     </motion.div>
   );
 };
@@ -154,3 +192,5 @@ const PetCard = ({ pet, onDelete }) => {
 export default PetCard;
 
 
+
+ 

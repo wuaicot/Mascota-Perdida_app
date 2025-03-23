@@ -23,10 +23,10 @@ MASCOTA-PERDIDA_APP/
 │   │   │   │   ├── dashboardheroe.js              
 │   │   │   ├── owner/              
 │   │   │   │   ├── dashboard.js
-│   │   │   ├── pets/               
-│   │   │   │   ├── new.js          
+│   │   │   ├── pets/     
 │   │   │   │   ├── _app.js         
 │   │   │   │   ├── index.js        
+│   │   │   │          
 │   │   ├── styles/                 
 │   │   │   ├── globals.css
 │   │   ├── utils/                   
@@ -42,6 +42,8 @@ MASCOTA-PERDIDA_APP/
 │   ├── tailwind.config.js
 │           
 ├──server/
+├── config/
+│   ├── lost-pet-app-fb-firebase.json  
 ├── node_modules/                  
 ├── prisma/                          
 │   ├── migrations/                  
@@ -72,6 +74,5 @@ MASCOTA-PERDIDA_APP/
 ├── .txt
 ├── descktop.ini
 ├── README.md   
-
 
 
