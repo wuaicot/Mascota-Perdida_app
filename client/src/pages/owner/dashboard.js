@@ -6,7 +6,7 @@ import Layout from "../../components/Layout";
 import PetCard from "../../components/PetCard";
 import { AnimatePresence } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
   const [pets, setPets] = useState([]);
@@ -87,3 +87,10 @@ const Dashboard = () => {
 
 export default Dashboard;
 
+{
+  /*   
+     <header>
+        <NavBarOwner />
+      </header> 
+  */
+}

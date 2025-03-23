@@ -1,11 +1,11 @@
-// //client/src/components/NavBarHeroe.js
+//clien/src/components/NavBarOwner.js
 
 import React, { useState } from "react";
 import Link from "next/link"; 
 import { motion } from "framer-motion";
 import { Menu, X, Home, User, LogOut } from "lucide-react";
 
-const NavBarHeroe = () => {
+const NavBarOwner = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -63,4 +63,4 @@ const NavItem = ({ to, icon, text }) => (
   </motion.li>
 );
 
-export default NavBarHeroe;
+export default NavBarOwner;
