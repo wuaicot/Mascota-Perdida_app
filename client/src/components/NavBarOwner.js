@@ -13,7 +13,7 @@ const NavBarOwner = () => {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold tracking-wide flex items-center gap-2">
-          🦸‍♂️ HeroDash
+          🦸‍♂️ Dueño de Mascota
         </Link>
 
         {/* Menú hamburguesa (Móvil) */}

@@ -12,30 +12,30 @@ model User {
   email     String   @unique
   password  String
   role      String   @default("owner")
-  pets      Pet[]
   createdAt DateTime @default(now())
+  pets      Pet[]
 }
 
 model Pet {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
   type        String
-  description String?
-  qrId        String   @unique @default(uuid())
+  qrId        String    @unique @default(uuid())
   photoUrl    String?
-  owner       User     @relation(fields: [ownerId], references: [id])
   ownerId     Int
+  createdAt   DateTime  @default(now())
+  description String?
+  deletedAt   DateTime?
   alerts      Alert[]
-  createdAt   DateTime @default(now())
-  deletedAt   DateTime? // Para borrado lógico
+  owner       User      @relation(fields: [ownerId], references: [id])
 }
 
 model Alert {
-  id          Int      @id @default(autoincrement())
-  pet         Pet      @relation(fields: [petId], references: [id])
-  petId       Int
-  location    String?
-  status      String   @default("lost")
-  createdAt   DateTime @default(now())
-  reportedAt  DateTime? // Nueva columna
+  id         Int       @id @default(autoincrement())
+  petId      Int
+  location   String?
+  status     String    @default("lost")
+  createdAt  DateTime  @default(now())
+  reportedAt DateTime?
+  pet        Pet       @relation(fields: [petId], references: [id])
 }

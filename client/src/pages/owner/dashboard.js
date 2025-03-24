@@ -7,6 +7,7 @@ import PetCard from "../../components/PetCard";
 import { AnimatePresence } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NavBarOwner  from "../../components/NavBarOwner";
 
 const Dashboard = () => {
   const [pets, setPets] = useState([]);
@@ -51,10 +52,15 @@ const Dashboard = () => {
   }
 
   return (
+
+    
     <Layout>
       {/* Contenedor para notificaciones */}
-      <ToastContainer position="top-right" autoClose={3000} />
-      <div className="p-8 max-w-7xl mx-auto">
+      <ToastContainer   position="top-right" autoClose={3000} />
+      <div className="p-8 max-w-7xl mx-auto ">
+      <header className="-mt-6">
+        <NavBarOwner />
+      </header> 
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
             Mis Mascotas Registradas
@@ -79,7 +85,9 @@ const Dashboard = () => {
               ))}
             </AnimatePresence>
           </div>
+          
         )}
+        
       </div>
     </Layout>
   );

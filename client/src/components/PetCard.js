@@ -87,12 +87,12 @@ const PetCard = ({ pet, onDelete }) => {
       : "bg-orange-100 text-orange-800";
 
   return (
-    <motion.div
-      className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.3 } }}
-    >
+     <motion.div
+       className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative"
+       initial={{ opacity: 0, scale: 0.95 }}
+       animate={{ opacity: 1, scale: 1 }}
+       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.3 } }}
+     >
       {/* Botón de eliminación */}
       <button
         onClick={handleDelete}
