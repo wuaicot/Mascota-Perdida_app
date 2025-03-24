@@ -52,6 +52,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Servidor activo en http://localhost:${PORT}`);
+  console.log(`✅ Servidor activo en ${process.env.NODE_ENV === 'production' ? `http://localhost:${PORT}` : `http://localhost:5000`}`);
   console.log(`📁 Temporary files dir: ${path.resolve('./tmp')}`);
 });
