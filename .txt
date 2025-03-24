@@ -1,3 +1,4 @@
+    #PROYECTO SUPER-COLLAR# 
 MASCOTA-PERDIDA_APP/
 ├── client/
 │   ├── .next/                     
@@ -6,10 +7,14 @@ MASCOTA-PERDIDA_APP/
 │   │   ├── components/ 
 │   │   │   ├── AdCarpusel.js
 │   │   │   ├── Alert.js
-│   │   │   ├── Layout.js
+│   │   │   ├── HeroContactModal.js
+│   │   │   ├── Layout.js    
 │   │   │   ├── LostPetsMap.js
 │   │   │   ├── Modal.js
 │   │   │   ├── Navbar.js
+│   │   │   ├── NavBarHeroe.js
+│   │   │   ├── NavBarOwner.js
+│   │   │   ├── OwnerContactModal.js
 │   │   │   ├── PetCard.js
 │   │   │   ├── QRScanner.js
 │   │   ├── contexts/               
@@ -23,10 +28,11 @@ MASCOTA-PERDIDA_APP/
 │   │   │   │   ├── dashboardheroe.js              
 │   │   │   ├── owner/              
 │   │   │   │   ├── dashboard.js
-│   │   │   ├── pets/     
-│   │   │   │   ├── _app.js         
-│   │   │   │   ├── index.js        
-│   │   │   │          
+│   │   │   ├── pets/ 
+│   │   │   │   ├── new.js    
+│   │   │   ├── _app.js         
+│   │   │   ├── index.js        
+│   │   │             
 │   │   ├── styles/                 
 │   │   │   ├── globals.css
 │   │   ├── utils/                   
@@ -42,37 +48,40 @@ MASCOTA-PERDIDA_APP/
 │   ├── tailwind.config.js
 │           
 ├──server/
-├── config/
-│   ├── lost-pet-app-fb-firebase.json  
-├── node_modules/                  
-├── prisma/                          
-│   ├── migrations/                  
-│   ├── schema.prisma                
-├── src/                              
-│   ├── controllers/                  
-│   │   ├── alertsController.js       
-│   │   ├── authController.js         
-│   │   ├── petsController.js         
-│   ├── middleware/                   
-│   │   ├── authMiddleware.js         
-│   ├── routes/                       
-│   │   ├── alerts.js                 
-│   │   ├── auth.js                   
-│   │   ├── pets.js                   
-│   ├── utils/                        
-│   │   ├── email.js                  
-│   │   ├── storage.js                
-│   │   ├── index.js                   
-├── tmp/
-│   ├── .env                         
-│   ├── .txt                              
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── Procfile
+│  ├── config/
+│  │   ├── lost-pet-app-fb-firebase.json  
+│  ├── node_modules/                  
+│  ├── prisma/                          
+│  │   ├── migrations/                  
+│  │   ├── schema.prisma                
+│  ├── src/                              
+│  │   ├── controllers/                  
+│  │   ├── alertsController.js       
+│  │   ├── authController.js         
+│  │   ├── petsController.js         
+│  ├── middleware/                   
+│  │   ├── authMiddleware.js
+│  │   ├── rateLimiter.js         
+│  ├── routes/                       
+│  │   ├── alerts.js                 
+│  │   ├── auth.js                   
+│  │   ├── pets.js                   
+│  ├── utils/                        
+│  │   ├── email.js
+│  │   ├── notification.js                  
+│  │   ├── storage.js                
+│  ├── index.js                   
+│  ├── tmp/
+│  ├── .env                         
+│  ├── .txt                              
+│  ├── package-lock.json
+│  ├── package.json
+│  ├── Procfile
 │
 ├── .gitignore   
 ├── .txt
 ├── descktop.ini
-├── README.md   
+├── README.md
+END.   
 
 
