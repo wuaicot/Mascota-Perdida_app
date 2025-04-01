@@ -31,7 +31,7 @@ client/.npm
 server/.npm
 server/tmp/
 
-server/config/lost-pet-app-fb-firebase-adminsdk-fbsvc-59bb81ae83.json
+server/config/
 
 # Elastic Beanstalk Files
 server/.elasticbeanstalk/*
