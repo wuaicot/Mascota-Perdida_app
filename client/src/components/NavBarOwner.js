@@ -1,18 +1,31 @@
-//clien/src/components/NavBarOwner.js
-
 import React, { useState } from "react";
-import Link from "next/link"; 
+import Link from "next/link";
 import { motion } from "framer-motion";
+import Marquee from "react-fast-marquee";
 import { Menu, X, Home, User, LogOut } from "lucide-react";
 
 const NavBarOwner = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-blue-950 text-white shadow-lg rounded-lg">
+    <nav className="bg-blue-950 text-white shadow-lg rounded-lg relative  ">
+      {/* Cinta de advertencia */}
+      <Marquee
+        speed={50}
+        gradient={false}
+        className="bg-red-600 text-white py-1 text-sm"
+      >
+        <strong>
+          Esta app está en desarrollo, puede que no funcione correctamente 👁️‍🗨️
+        </strong>
+      </Marquee>
+
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-bold tracking-wide flex items-center gap-2">
+        <Link
+          href="/"
+          className="text-2xl font-bold tracking-wide flex items-center gap-2"
+        >
           🦸‍♂️ Dueño de Mascota
         </Link>
 
@@ -26,9 +39,18 @@ const NavBarOwner = () => {
 
         {/* Links en pantallas grandes */}
         <ul className="hidden lg:flex space-x-6 text-lg">
-          <NavItem to="/dashboard" icon={<Home size={20} />} text="Inicio" />
-          <NavItem to="/perfil" icon={<User size={20} />} text="Perfil" />
-          <NavItem to="/logout" icon={<LogOut size={20} />} text="Salir" />
+          <NavItem
+            to="/owner/dashboard"
+            icon={<Home size={20} />}
+            text="Inicio"
+          />
+          <NavItem to="/owner/perfil" icon={<User size={20} />} text="Perfil" />
+          <NavItem
+            to="/"
+            icon={<LogOut size={20} />}
+            text="Salir"
+            onClick={handleLogout}
+          />
         </ul>
       </div>
 
@@ -41,9 +63,18 @@ const NavBarOwner = () => {
           className="lg:hidden bg-gray-800"
         >
           <ul className="flex flex-col items-center space-y-4 py-4 text-lg">
-            <NavItem to="/dashboard" icon={<Home size={20} />} text="Inicio" />
-            <NavItem to="/perfil" icon={<User size={20} />} text="Perfil" />
-            <NavItem to="/logout" icon={<LogOut size={20} />} text="Salir" />
+            <NavItem
+              to="/owner/dashboard"
+              icon={<Home size={20} />}
+              text="###"
+            />
+            <NavItem to="/owner/perfil" icon={<User size={20} />} text="###" />
+            <NavItem
+              to="/"
+              icon={<LogOut size={20} />}
+              text="Cerrar sesión"
+              onClick={handleLogout}
+            />
           </ul>
         </motion.div>
       )}
@@ -51,16 +82,22 @@ const NavBarOwner = () => {
   );
 };
 
-// Componente de Item reutilizable
-const NavItem = ({ to, icon, text }) => (
+const NavItem = ({ to, icon, text, onClick }) => (
   <motion.li
     whileHover={{ scale: 1.1 }}
     whileTap={{ scale: 0.9 }}
     className="flex items-center gap-2 hover:text-blue-400 transition-colors"
   >
     {icon}
-    <Link href={to}>{text}</Link>
+    <Link href={to} onClick={onClick}>
+      {text}
+    </Link>
   </motion.li>
 );
+
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/";
+};
 
 export default NavBarOwner;

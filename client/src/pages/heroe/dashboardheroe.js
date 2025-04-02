@@ -7,6 +7,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import NavBarHeroe from "../../components/NavBarHeroe";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Marquee from "react-fast-marquee";
 
 const LostPetsMap = dynamic(() => import("../../components/LostPetsMap"), {
   ssr: false,
@@ -17,7 +18,7 @@ const Timeline = () => {
     green: "bg-green-500",
     yellow: "bg-yellow-500",
     blue: "bg-blue-500",
-    gray: "bg-gray-500"
+    gray: "bg-gray-500",
   };
 
   return (
@@ -48,7 +49,11 @@ const Timeline = () => {
         ].map((step, index) => (
           <li key={index}>
             <div className="flex items-center">
-              <div className={`w-4 h-4 rounded-full mr-2 ${statusColors[step.color]}`}></div>
+              <div
+                className={`w-4 h-4 rounded-full mr-2 ${
+                  statusColors[step.color]
+                }`}
+              ></div>
               <span>{step.status}</span>
             </div>
             <p className="ml-6 text-gray-600 text-sm">{step.desc}</p>
@@ -75,9 +80,6 @@ const FancyHello = () => {
           objectFit="cover"
           className="rounded-3xl mt-4 "
           priority
-          
-          
-          
         />
       </motion.div>
 
