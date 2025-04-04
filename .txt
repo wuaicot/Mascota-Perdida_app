@@ -47,7 +47,7 @@ MASCOTA-PERDIDA_APP/
 │   ├── postcss.config.mjs           
 │   ├── tailwind.config.js  
 │
-MASCOTA-PERDIDA_APP/           
+./MASCOTA-PERDIDA_APP/           
 ├──server/
 │  ├── .elasticbeanstalk/   
 │  ├── config/
