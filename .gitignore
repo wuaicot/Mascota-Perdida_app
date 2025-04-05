@@ -40,3 +40,5 @@ server/.elasticbeanstalk/*
 
 
 *.txt
+client/package-lock.json
+server/package-lock.json
