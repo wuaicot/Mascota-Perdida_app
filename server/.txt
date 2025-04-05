@@ -32,3 +32,13 @@ https://myaccount.google.com/apppasswords?rapt=AEjHL4Nu2UwCVfoaKZ8tBw6Tq77RbB1aJ
 comandos para generar la estructura del proyecto en un archivo llamado estructura.txt
 
 "tree /D > directorios.txt" y "tree /F > estructura.txt"
+
+
+aws rds describe-db-instances --query "DBInstances[*].DBInstanceStatus"
+
+aws elasticbeanstalk describe-environments --query "Environments[*].EnvironmentId"
+
+aws rds describe-db-instances --query "DBInstances[*].DBInstanceIdentifier"
+
+aws rds describe-db-instances
+aws rds describe-db-clusters
