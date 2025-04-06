@@ -1,4 +1,4 @@
-//server/src/index.js
+// server/src/index.js
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
@@ -17,9 +17,9 @@ const allowedOrigin = process.env.NODE_ENV === 'development'
   ? 'http://localhost:3000'
   : process.env.CLIENT_URL;
 
-console.log("Allowed origin:", allowedOrigin); // <-- Aquí se imprime el origen permitido
+console.log("✅ Allowed origin:", allowedOrigin); // <-- Aquí se imprime el origen permitido
 
-// Middlewares actualizados
+// Middlewares
 app.use(cors({
   origin: allowedOrigin,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -34,24 +34,29 @@ app.use(cookieParser());
 app.use(fileUpload({
   useTempFiles: true,
   tempFileDir: path.join(__dirname, '../tmp'),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
   abortOnLimit: true,
   safeFileNames: true,
   preserveExtension: true
 }));
 
-// Rutas
+// ✅ Ruta de verificación de salud para Elastic Beanstalk
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+// Rutas principales de la API
 app.use('/api/auth', authRoutes);
 app.use('/api/pets', petRoutes);
 app.use('/api/alerts', alertRoutes);
 
 // Manejador de errores
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('❌ Error interno del servidor:', err.stack);
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Servidor activo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor activo en http://localhost:${PORT}`);
   console.log(`📁 Temporary files dir: ${path.resolve('./tmp')}`);
 });

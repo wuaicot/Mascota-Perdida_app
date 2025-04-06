@@ -37,3 +37,8 @@ server/config/
 server/.elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+
+*.txt
+client/package-lock.json
+server/package-lock.json

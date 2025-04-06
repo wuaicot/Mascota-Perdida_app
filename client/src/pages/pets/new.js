@@ -1,81 +1,91 @@
 // client/src/pages/pets/new.js
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { FaDog, FaCat, FaUpload, FaArrowLeft, FaSignOutAlt } from 'react-icons/fa';
-import { toast } from 'react-toastify';
-import Confetti from 'react-confetti';
-import { useWindowSize } from 'react-use';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useRouter } from "next/router";
+import {
+  FaDog,
+  FaCat,
+  FaUpload,
+  FaArrowLeft,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { toast } from "react-toastify";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
 
 const PetForm = () => {
   const router = useRouter();
   const { width, height } = useWindowSize();
-  const [form, setForm] = useState({ 
-    name: '', 
-    type: 'perro', 
-    description: '',
-    photo: null
+  const [form, setForm] = useState({
+    name: "",
+    type: "perro",
+    description: "",
+    photo: null,
   });
   const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState('');
-  const [error, setError] = useState('');
+  const [preview, setPreview] = useState("");
+  const [error, setError] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
 
   // Verificar autenticación
   useEffect(() => {
-    if(!localStorage.getItem('jwt')) {
-      router.push('/auth/login');
+    if (!localStorage.getItem("jwt")) {
+      router.push("/auth/login");
     }
   }, [router]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if(file.size > 5 * 1024 * 1024) {
-      setError('El archivo no puede ser mayor a 5MB');
+    if (file.size > 5 * 1024 * 1024) {
+      setError("El archivo no puede ser mayor a 5MB");
       return;
     }
     setForm({ ...form, photo: file });
     setPreview(URL.createObjectURL(file));
-    setError('');
+    setError("");
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('jwt');
-    router.push('/auth/login');
+    localStorage.removeItem("jwt");
+    router.push("/auth/login");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    
+    setError("");
+
     try {
       const formData = new FormData();
-      formData.append('name', form.name);
-      formData.append('type', form.type);
-      formData.append('description', form.description);
-      formData.append('photo', form.photo);
+      formData.append("name", form.name);
+      formData.append("type", form.type);
+      formData.append("description", form.description);
+      formData.append("photo", form.photo);
 
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/pets`, formData, {
-        headers: { 
-          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-          'Content-Type': 'multipart/form-data'
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/pets`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
+      );
 
       // Mostrar efecto de confetti y reproducir trompeta
       toast.success("Mascota registrada con éxito");
       setShowConfetti(true);
-      const audio = new Audio('/trumpet.mp3'); // Asegúrate de colocar 'trumpet.mp3' en la carpeta public
+      const audio = new Audio("/trumpet.mp3"); // Asegúrate de colocar 'trumpet.mp3' en la carpeta public
       audio.play();
 
       //tiempo de duración del confetti
       setTimeout(() => {
         setShowConfetti(false);
-        router.push('/owner/dashboard');
+        router.push("/owner/dashboard");
       }, 3500);
     } catch (error) {
-      setError(error.response?.data?.error || 'Error al registrar la mascota');
+      setError(error.response?.data?.error || "Error al registrar la mascota");
     } finally {
       setLoading(false);
     }
@@ -84,18 +94,25 @@ const PetForm = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-8 relative">
       {/* Confetti de fanfarria */}
-      {showConfetti && <Confetti width={width} height={height} recycle={false} numberOfPieces={500} />}
-      
+      {showConfetti && (
+        <Confetti
+          width={width}
+          height={height}
+          recycle={false}
+          numberOfPieces={500}
+        />
+      )}
+
       {/* Header de navegación */}
       <div className="max-w-2xl mx-auto mb-6 flex justify-between items-center">
-        <button 
-          onClick={() => router.push('/owner/dashboard')}
+        <button
+          onClick={() => router.push("/owner/dashboard")}
           className="text-blue-600 hover:text-blue-800 flex items-center"
         >
           <FaArrowLeft className="mr-2" />
           Volver al Dashboard
         </button>
-        
+
         <button
           onClick={handleLogout}
           className="text-red-600 hover:text-red-800 flex items-center"
@@ -111,7 +128,7 @@ const PetForm = () => {
           <FaDog className="mr-2" />
           Registrar Nueva Mascota
         </h2>
-        
+
         {error && (
           <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
             {error}
@@ -159,7 +176,9 @@ const PetForm = () => {
             <textarea
               className="w-full p-2 border rounded-md h-32 focus:ring-2 focus:ring-blue-500"
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
               placeholder="Ej: Collar rojo, mancha en la oreja izquierda..."
             />
           </div>
@@ -182,14 +201,16 @@ const PetForm = () => {
                 />
               </label>
               {preview && (
-                <img 
-                  src={preview} 
-                  alt="Preview" 
+                <img
+                  src={preview}
+                  alt="Preview"
                   className="w-20 h-20 object-cover rounded-md border"
                 />
               )}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Formatos soportados: JPG, PNG, WEBP (Máx. 5MB)</p>
+            <p className="text-sm text-gray-500 mt-2">
+              Formatos soportados: JPG, PNG, WEBP (Máx. 5MB)
+            </p>
           </div>
 
           {/* Botón de enviar */}
@@ -204,7 +225,7 @@ const PetForm = () => {
                 Registrando...
               </>
             ) : (
-              'Registrar Mascota'
+              "Registrar Mascota"
             )}
           </button>
         </form>
