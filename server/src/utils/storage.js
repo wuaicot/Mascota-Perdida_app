@@ -7,12 +7,13 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
+  region: process.env.AWS_S3_REGION || 'us-east-2', // 👈 Control absoluto
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
   }
 });
+
 
 const getContentType = (fileName) => {
   const extension = fileName.split('.').pop().toLowerCase();

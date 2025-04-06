@@ -40,5 +40,7 @@ aws elasticbeanstalk describe-environments --query "Environments[*].EnvironmentI
 
 aws rds describe-db-instances --query "DBInstances[*].DBInstanceIdentifier"
 
+aws ec2 describe-key-pairs --query "KeyPairs[*].KeyName"
+
 aws rds describe-db-instances
 aws rds describe-db-clusters
