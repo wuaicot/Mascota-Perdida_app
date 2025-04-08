@@ -51,6 +51,10 @@ comandos para generar la estructura del proyecto en un archivo llamado estructur
 "tree /D > directorios.txt" y "tree /F > estructura.txt"
 _______________________________________________________________________________
 
+eb status
+eb printenv
+eb deploy
+
 aws iam list-instance-profiles --query "InstanceProfiles[*].InstanceProfileName"
 
 aws rds describe-db-instances --query "DBInstances[*].DBInstanceStatus"

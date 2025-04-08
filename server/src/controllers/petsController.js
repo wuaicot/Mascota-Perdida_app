@@ -1,4 +1,4 @@
-//server/src/controllers/petsController.js
+// server/src/controllers/petsController.js
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { uploadToS3 } = require("../utils/storage");
@@ -52,7 +52,6 @@ exports.getPetsByOwner = async (req, res) => {
   }
 };
 
-
 // Función para eliminar mascotas (¡Verifica que exista!)
 exports.deletePet = async (req, res) => {
   try {
@@ -64,7 +63,39 @@ exports.deletePet = async (req, res) => {
   }
 };
 
-// Función para marcar como encontrada (¡Verifica que exista!)
+// Función para marcar la mascota como encontrada
 exports.markAsFound = async (req, res) => {
-  // ... lógica de la función ...
+  try {
+    const { location } = req.body;
+    const qrId = req.params.qrId; // Se espera el QR-id en la URL
+
+    // Buscar la mascota usando el QR-id
+    const pet = await prisma.pet.findUnique({
+      where: { qrId }
+    });
+
+    if (!pet) {
+      return res.status(404).json({ error: "Mascota no encontrada con este QR" });
+    }
+
+    // Crear alerta con la ubicación y datos de la mascota
+    const newAlert = await prisma.alert.create({
+      data: {
+        petId: pet.id,
+        location: JSON.stringify(location),
+        status: "reported",
+        reportedAt: new Date(),
+      }
+    });
+
+    // Obtener información de contacto del dueño
+    const owner = await prisma.user.findUnique({
+      where: { id: pet.ownerId }
+    });
+
+    res.status(200).json({ ownerContact: { email: owner.email } });
+  } catch (error) {
+    console.error("Error en markAsFound:", error);
+    res.status(500).json({ error: "Error al reportar la mascota encontrada" });
+  }
 };

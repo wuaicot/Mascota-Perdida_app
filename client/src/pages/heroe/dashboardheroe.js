@@ -1,3 +1,4 @@
+//client/src/components/dashboardheroe.js
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import QRScanner from "../../components/QRScanner";
