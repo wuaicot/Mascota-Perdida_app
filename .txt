@@ -49,6 +49,9 @@ MASCOTA-PERDIDA_APP/
 │
 ./MASCOTA-PERDIDA_APP/           
 ├──server/
+│  ├── .ebextensions/
+│  │   ├── 01-healthcheck.config
+│  │   ├── 02-redirect-https.config
 │  ├── .elasticbeanstalk/   
 │  ├── config/
 │  │   ├── lost-pet-app-fb-firebase.json  
