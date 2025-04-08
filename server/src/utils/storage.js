@@ -1,13 +1,12 @@
 //server/src/utils/storage.js
 
-
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const s3Client = new S3Client({
-  region: process.env.AWS_S3_REGION || 'us-east-2', // 👈 Control absoluto
+  region: process.env.AWS_S3_REGION || 'us-east-1', // 👈 Control absoluto
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY

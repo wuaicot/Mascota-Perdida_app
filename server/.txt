@@ -1,28 +1,44 @@
-├── server
-│   ├── node_modules
-│   ├── prisma
-│   │   ├── migrations
-│   │   └── schema.prisma
-│   ├── src
-│   │   ├── controllers
-│   │   │   ├── alertsController.js
-│   │   │   ├── authController.js
-│   │   │   └── petsController.js
-│   │   ├── middleware
-│   │   │   └── authMiddleware.js
-│   │   ├── routes
-│   │   │   ├── alerts.js
-│   │   │   ├── auth.js
-│   │   │   └── pets.js
-│   │   ├── utils
-│   │   │   ├── email.js
-│   │   │   └── index.js
-│   ├── .env
-│   ├── .txt
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── .gitignore
-│   └── README.md
+./MASCOTA-PERDIDA_APP/           
+├──server/
+│  ├── .ebextensions/
+│  │   ├── 01-healthcheck.config
+│  │   ├── 02-redirect-https.config
+│  ├── .elasticbeanstalk/   
+│  ├── config/
+│  │   ├── lost-pet-app-fb-firebase.json  
+│  ├── node_modules/                  
+│  ├── prisma/                          
+│  │   ├── migrations/                  
+│  │   ├── schema.prisma                
+│  ├── src/                              
+│  │   ├── controllers/                  
+│  │   ├── alertsController.js       
+│  │   ├── authController.js         
+│  │   ├── petsController.js         
+│  ├── middleware/                   
+│  │   ├── authMiddleware.js
+│  │   ├── rateLimiter.js         
+│  ├── routes/                       
+│  │   ├── alerts.js                 
+│  │   ├── auth.js                   
+│  │   ├── pets.js                   
+│  ├── utils/                        
+│  │   ├── email.js
+│  │   ├── notification.js                  
+│  │   ├── storage.js                
+│  ├── index.js                   
+│  ├── tmp/
+│  ├── .env                         
+│  ├── .txt                              
+│  ├── package-lock.json
+│  ├── package.json
+│  ├── Procfile
+│
+├── .gitignore   
+├── .txt
+├── descktop.ini
+├── README.md
+END.
 
 
 ------------------------------------------------
@@ -34,22 +50,21 @@ comandos para generar la estructura del proyecto en un archivo llamado estructur
 "tree /D > directorios.txt" y "tree /F > estructura.txt"
 _______________________________________________________________________________
 
-
 aws iam list-instance-profiles --query "InstanceProfiles[*].InstanceProfileName"
 
 aws rds describe-db-instances --query "DBInstances[*].DBInstanceStatus"
 aws rds describe-db-instances --query "DBInstances[*].DBInstanceIdentifier"
+aws rds describe-db-instances
+aws rds describe-db-clusters
 
 aws elasticbeanstalk describe-environments --query "Environments[*].EnvironmentId"
 aws elasticbeanstalk describe-environments --region us-east-1
 
 aws ec2 describe-key-pairs --query "KeyPairs[*].KeyName"
-aws ec2 describe-key-pairs --key-name lostpet-app-key-III
-aws ec2 describe-key-pairs --key-name lostpet-app-key-III --region us-east-1
+aws ec2 describe-key-pairs --key-name super-collar-Ec2-keypair --region us-east-1
 
-
-aws rds describe-db-instances
-aws rds describe-db-clusters
-
+aws s3api get-bucket-acl --bucket images-app-lost-pet
+aws s3 ls
+aws s3api get-bucket-location --bucket images-app-lost-pet
 
 npx prisma db pull

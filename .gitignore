@@ -16,7 +16,9 @@ client/out/
 
 # Ignorar archivos de depuración y logs
 *.log
-*.tmp
+
+server/tmp/
+
 
 # Ignorar archivos de IDE (VSCode, IntelliJ, etc.)
 .vscode/
@@ -29,14 +31,14 @@ client/out/
 client/.cache/
 client/.npm
 server/.npm
-server/tmp/
+
 
 server/config/
 
 # Elastic Beanstalk Files
-server/.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+server/.elasticbeanstalk/
+
+server/.ebextensions/
 
 
 *.txt
