@@ -1,4 +1,3 @@
-// server/src/index.js
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
@@ -11,6 +10,16 @@ const alertRoutes = require('./routes/alerts');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Forzar HTTPS si estamos en producción
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect(301, 'https://' + req.headers.host + req.url);
+    }
+    next();
+  });
+}
 
 // Determinar el origen permitido
 const allowedOrigin = process.env.NODE_ENV === 'development'
@@ -57,6 +66,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor activo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor activo en https://localhost:${PORT}`);
   console.log(`📁 Temporary files dir: ${path.resolve('./tmp')}`);
 });

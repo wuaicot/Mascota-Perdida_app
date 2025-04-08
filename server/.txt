@@ -1,4 +1,5 @@
-./MASCOTA-PERDIDA_APP/           
+./MASCOTA-PERDIDA_APP/
+├──client/           
 ├──server/
 │  ├── .ebextensions/
 │  │   ├── 01-healthcheck.config
