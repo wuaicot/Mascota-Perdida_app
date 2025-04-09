@@ -66,6 +66,7 @@ aws elasticbeanstalk describe-environments --query "Environments[*].EnvironmentI
 aws elasticbeanstalk describe-applications
 aws elasticbeanstalk describe-environments --region us-east-1
 aws elasticbeanstalk delete-application --application-name <nombre_de_aplicacion --terminate-env-by-force
+Remove-Item -Recurse -Force .elasticbeanstalk
 
 aws ec2 describe-key-pairs --query "KeyPairs[*].KeyName"
 aws ec2 describe-key-pairs --key-name super-collar-Ec2-keypair --region us-east-1
