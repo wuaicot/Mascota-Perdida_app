@@ -1,5 +1,6 @@
+// client/src/components/QRScanner.js
 import { Scanner } from "@yudiel/react-qr-scanner";
-import { useState, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import OwnerContactModal from "./OwnerContactModal"; // Modal para mostrar los datos de contacto del Dueño
@@ -9,61 +10,46 @@ const QRScanner = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [ownerContact, setOwnerContact] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const scannerRef = useRef(null);
 
-  const handleScan = useCallback(
-    async (data) => {
-      if (!data) return;
-      setIsScanning(false); // Detener el escaneo tras un resultado exitoso
-      setScanResult(data);
-
-      try {
-        // Obtener la ubicación del Héroe
-        const position = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            timeout: 10000, // Timeout aumentado para mayor fiabilidad
-            enableHighAccuracy: true, // Solicitar mayor precisión si está disponible
-          });
+  const handleScan = useCallback(async (data) => {
+    if (!data) return;
+    setIsScanning(false);
+    setScanResult(data);
+    console.log("QR-id escaneado:", data);
+  
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          timeout: 10000,
+          enableHighAccuracy: true,
         });
-
-        const { latitude, longitude } = position.coords;
-
-        // Enviar la ubicación al endpoint; se espera que la respuesta incluya la info de contacto del Dueño
-        const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/pets/${data}/found`,
-          { location: { latitude, longitude } }
-        );
-
-        // Asumimos que la respuesta tiene la siguiente estructura:
-        // { ownerContact: { name: string, email: string, whatsapp: string } }
-        if (response.data?.ownerContact) {
-          setOwnerContact(response.data.ownerContact);
-          setModalOpen(true);
-        }
-
-        // Mensaje de feedback (opcional si se usa el modal)
-        // alert("¡Mascota reportada como encontrada! Se ha notificado al dueño.");
-
-        setScanResult(""); // Limpiar el resultado para el próximo escaneo
-      } catch (error) {
-        if (error.code === error.PERMISSION_DENIED) {
-          alert(
-            "Debes habilitar los permisos de ubicación para poder reportar la mascota encontrada."
-          );
-        } else if (error.code === error.TIMEOUT) {
-          alert(
-            "No se pudo obtener la ubicación a tiempo. Por favor, intenta nuevamente en un área con mejor señal GPS."
-          );
-        } else {
-          console.error("Error al procesar el escaneo:", error);
-          alert(
-            "Ocurrió un error al procesar el escaneo. Por favor, intenta nuevamente."
-          );
-        }
+      });
+      const { latitude, longitude } = position.coords;
+      
+      // Registrar y comprobar la URL final
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/pets/${data}/found`;
+      console.log("Enviando petición a:", apiUrl);
+  
+      const response = await axios.post(apiUrl, { location: { latitude, longitude } });
+      console.log("Respuesta de la API:", response.data);
+  
+      if (response.data?.ownerContact) {
+        setOwnerContact(response.data.ownerContact);
+        setModalOpen(true);
       }
-    },
-    [setScanResult]
-  );
+      setScanResult("");
+    } catch (error) {
+      console.error("Error en handleScan:", error);
+      if (error.code === error.PERMISSION_DENIED) {
+        alert("Debes habilitar los permisos de ubicación para poder reportar la mascota encontrada.");
+      } else if (error.code === error.TIMEOUT) {
+        alert("No se pudo obtener la ubicación a tiempo. Por favor, intenta nuevamente en un área con mejor señal GPS.");
+      } else {
+        alert("Ocurrió un error al procesar el escaneo. Por favor, intenta nuevamente.");
+      }
+    }
+  }, []);
+  
 
   const handleError = useCallback((error) => {
     console.error("Error del escáner QR:", error?.message);
@@ -111,7 +97,6 @@ const QRScanner = () => {
       {isScanning && (
         <div className="relative w-full overflow-hidden rounded-md mb-4">
           <Scanner
-            ref={scannerRef}
             onDecode={handleScan}
             onError={handleError}
             constraints={{ facingMode: "environment" }}
