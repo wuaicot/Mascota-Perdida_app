@@ -5,7 +5,8 @@ import axios from 'axios';
 import Link from 'next/link';
 import { FaUserPlus, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://supercollar.win';
+//http://localhost:5000
 
 const Register = () => {
   const router = useRouter();

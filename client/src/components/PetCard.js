@@ -9,7 +9,8 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import HeroContactModal from "./HeroContactModal"; // Modal para mostrar la info del Héroe
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://supercollar.win";
+//http://localhost:5000
 
 const PetCard = ({ pet, onDelete }) => {
   const router = useRouter();
