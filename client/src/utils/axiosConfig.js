@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://supercollar.win',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://supercollarwin-entorno.eba-g3hemtif.us-east-1.elasticbeanstalk.com',
   withCredentials: true
 });
 
