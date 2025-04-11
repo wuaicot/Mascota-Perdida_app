@@ -2,9 +2,11 @@
 ├──client/           
 ├──server/
 │  ├── .ebextensions/
-│  │   ├── 01-healthcheck.config
-│  │   ├── 02-redirect-https.config
-│  ├── .elasticbeanstalk/   
+│  │   ├── 03-configure-https.config
+│  │   ├── 04-configure-nginx-port.config
+│  │   ├── node.config
+│  ├── .elasticbeanstalk/
+│  │   ├── config.yml   
 │  ├── config/
 │  │   ├── lost-pet-app-fb-firebase.json  
 │  ├── node_modules/                  
@@ -51,9 +53,12 @@ comandos para generar la estructura del proyecto en un archivo llamado estructur
 "tree /D > directorios.txt" y "tree /F > estructura.txt"
 _______________________________________________________________________________
 
+nslookup -type=CNAME supercollar.win
+
 eb status
 eb printenv
 eb deploy
+eb health
 
 aws iam list-instance-profiles --query "InstanceProfiles[*].InstanceProfileName"
 
@@ -62,10 +67,13 @@ aws rds describe-db-instances --query "DBInstances[*].DBInstanceIdentifier"
 aws rds describe-db-instances
 aws rds describe-db-clusters
 
+
 aws elasticbeanstalk describe-environments --query "Environments[*].EnvironmentId"
 aws elasticbeanstalk describe-applications
 aws elasticbeanstalk describe-environments --region us-east-1
 aws elasticbeanstalk delete-application --application-name <nombre_de_aplicacion --terminate-env-by-force
+aws elasticbeanstalk describe-configuration-settings --application-name "supercollarwin-aplicacion" --environment-name "supercollarwin-entorno" --query "ConfigurationSettings[].OptionSettings[?OptionName=='IamInstanceProfile']" --output table
+
 Remove-Item -Recurse -Force .elasticbeanstalk
 
 aws ec2 describe-key-pairs --query "KeyPairs[*].KeyName"
@@ -76,3 +84,12 @@ aws s3 ls
 aws s3api get-bucket-location --bucket images-app-lost-pet
 
 npx prisma db pull
+
+
+------------------------------------------------------
+SELECT * FROM "User" WHERE id = 1;
+SELECT * FROM "Pet" WHERE ownerId = 1;
+SELECT u.*, p.*
+FROM "User" u
+LEFT JOIN "Pet" p ON u.id = p."ownerId"
+WHERE u.id = 1;

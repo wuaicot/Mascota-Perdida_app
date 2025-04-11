@@ -4,7 +4,10 @@ const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan'); // Logging profesional
+const helmet = require('helmet'); // Seguridad HTTP
 
+// Rutas
 const authRoutes = require('./routes/auth');
 const petRoutes = require('./routes/pets');
 const alertRoutes = require('./routes/alerts');
@@ -13,9 +16,15 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Forzar HTTPS en producción
+// ✅ Seguridad extra con Helmet (solo en producción)
+if (NODE_ENV === 'production') {
+  app.use(helmet());
+}
+
+// ✅ Redirección a HTTPS en producción (excepto para /health)
 if (NODE_ENV === 'production') {
   app.use((req, res, next) => {
+    if (req.url === '/health') return next();
     if (req.headers['x-forwarded-proto'] !== 'https') {
       return res.redirect(301, `https://${req.headers.host}${req.url}`);
     }
@@ -23,7 +32,7 @@ if (NODE_ENV === 'production') {
   });
 }
 
-// CORS Configuración dinámica según entorno
+// ✅ CORS según entorno
 const allowedOrigin = NODE_ENV === 'development'
   ? 'http://localhost:3000'
   : process.env.CLIENT_URL;
@@ -38,37 +47,45 @@ app.use(cors({
   credentials: true
 }));
 
-// Middlewares esenciales
+// ✅ Logging con Morgan
+if (NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined'));
+}
+
+// ✅ Middlewares esenciales
 app.use(express.json({ limit: '5mb' }));
 app.use(cookieParser());
 
-// Subida de archivos
+// ✅ Middleware para subida de archivos
 app.use(fileUpload({
   useTempFiles: true,
   tempFileDir: path.join(__dirname, '../tmp'),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
   abortOnLimit: true,
   safeFileNames: true,
-  preserveExtension: true
+  preserveExtension: true,
+  createParentPath: true
 }));
 
-// Ruta de verificación de salud (útil para Elastic Beanstalk y otras plataformas cloud)
+// ✅ Ruta de salud para monitoreo
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-// Rutas de la API
+// ✅ Rutas de la API
 app.use('/api/auth', authRoutes);
 app.use('/api/pets', petRoutes);
 app.use('/api/alerts', alertRoutes);
 
-// Middleware global de manejo de errores
+// ✅ Middleware global de errores
 app.use((err, req, res, next) => {
   console.error('❌ Error interno del servidor:', err.stack);
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 
-// Inicialización del servidor
+// ✅ Inicio del servidor
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
   if (NODE_ENV === 'development') {
