@@ -35,7 +35,7 @@ if (NODE_ENV === 'production') {
 // ✅ CORS según entorno
 const allowedOrigin = NODE_ENV === 'development'
   ? 'http://localhost:3000'
-  : process.env.CLIENT_URL; // Asegúrate de que CLIENT_URL esté definido en tu .env para producción
+  : process.env.CLIENT_URL; 
 
 console.log(`✅ Entorno: ${NODE_ENV}`);
 console.log(`🌍 Origen permitido: ${allowedOrigin}`);
