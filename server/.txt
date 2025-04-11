@@ -85,6 +85,9 @@ aws s3api get-bucket-location --bucket images-app-lost-pet
 
 npx prisma db pull
 
+♦ Verifica la resolución DNS con:
+nslookup supercollarwin-entorno.eba-g3hemtif.us-east-1.elasticbeanstalk.com
+
 
 ------------------------------------------------------
 SELECT * FROM "User" WHERE id = 1;
