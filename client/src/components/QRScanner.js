@@ -1,6 +1,7 @@
 // client/src/components/QRScanner.js
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useState, useCallback } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import OwnerContactModal from "./OwnerContactModal"; // Modal para mostrar los datos de contacto del Dueño
@@ -10,46 +11,56 @@ const QRScanner = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [ownerContact, setOwnerContact] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
 
-  const handleScan = useCallback(async (data) => {
-    if (!data) return;
-    setIsScanning(false);
-    setScanResult(data);
-    console.log("QR-id escaneado:", data);
-  
-    try {
-      const position = await new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject, {
-          timeout: 10000,
-          enableHighAccuracy: true,
+  const handleScan = useCallback(
+    async (data) => {
+      if (!data) return;
+      setIsScanning(false);
+      setScanResult(data);
+      console.log("QR-id escaneado:", data);
+
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            timeout: 10000,
+            enableHighAccuracy: true,
+          });
         });
-      });
-      const { latitude, longitude } = position.coords;
-      
-      // Registrar y comprobar la URL final
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/pets/${data}/found`;
-      console.log("Enviando petición a:", apiUrl);
-  
-      const response = await axios.post(apiUrl, { location: { latitude, longitude } });
-      console.log("Respuesta de la API:", response.data);
-  
-      if (response.data?.ownerContact) {
-        setOwnerContact(response.data.ownerContact);
-        setModalOpen(true);
+        const { latitude, longitude } = position.coords;
+
+        // Registrar y comprobar la URL final
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/pets/${data}/found`;
+        console.log("Enviando petición a:", apiUrl);
+
+        const response = await axios.post(apiUrl, {
+          location: { latitude, longitude },
+        });
+        console.log("Respuesta de la API:", response.data);
+
+        // Redirigir directamente al dashboard del héroe después de un escaneo exitoso
+        router.push("/heroe/dashboardheroe");
+
+        setScanResult("");
+      } catch (error) {
+        console.error("Error en handleScan:", error);
+        if (error.code === error.PERMISSION_DENIED) {
+          alert(
+            "Debes habilitar los permisos de ubicación para poder reportar la mascota encontrada."
+          );
+        } else if (error.code === error.TIMEOUT) {
+          alert(
+            "No se pudo obtener la ubicación a tiempo. Por favor, intenta nuevamente en un área con mejor señal GPS."
+          );
+        } else {
+          alert(
+            "Ocurrió un error al procesar el escaneo. Por favor, intenta nuevamente."
+          );
+        }
       }
-      setScanResult("");
-    } catch (error) {
-      console.error("Error en handleScan:", error);
-      if (error.code === error.PERMISSION_DENIED) {
-        alert("Debes habilitar los permisos de ubicación para poder reportar la mascota encontrada.");
-      } else if (error.code === error.TIMEOUT) {
-        alert("No se pudo obtener la ubicación a tiempo. Por favor, intenta nuevamente en un área con mejor señal GPS.");
-      } else {
-        alert("Ocurrió un error al procesar el escaneo. Por favor, intenta nuevamente.");
-      }
-    }
-  }, []);
-  
+    },
+    [router]
+  );
 
   const handleError = useCallback((error) => {
     console.error("Error del escáner QR:", error?.message);

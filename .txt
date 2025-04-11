@@ -46,13 +46,14 @@ MASCOTA-PERDIDA_APP/
 │   ├── package.json                
 │   ├── postcss.config.mjs           
 │   ├── tailwind.config.js  
-│
-./MASCOTA-PERDIDA_APP/           
+│   •        
 ├──server/
 │  ├── .ebextensions/
-│  │   ├── 01-healthcheck.config
-│  │   ├── 02-redirect-https.config
-│  ├── .elasticbeanstalk/   
+│  │   ├── 03-configure-https.config
+│  │   ├── 04-configure-nginx-port.config
+│  │   ├── node.config
+│  ├── .elasticbeanstalk/
+│  │   ├── config.yml   
 │  ├── config/
 │  │   ├── lost-pet-app-fb-firebase.json  
 │  ├── node_modules/                  
@@ -82,7 +83,7 @@ MASCOTA-PERDIDA_APP/
 │  ├── package-lock.json
 │  ├── package.json
 │  ├── Procfile
-│
+│  •
 ├── .gitignore   
 ├── .txt
 ├── descktop.ini
