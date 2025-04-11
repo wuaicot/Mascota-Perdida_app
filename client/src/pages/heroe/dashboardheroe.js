@@ -1,7 +1,5 @@
-//client/src/components/dashboardheroe.js
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import QRScanner from "../../components/QRScanner";
 import AdCarousel from "../../components/AdCarousel";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
@@ -9,6 +7,10 @@ import NavBarHeroe from "../../components/NavBarHeroe";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Marquee from "react-fast-marquee";
+
+const QRScanner = dynamic(() => import("../../components/QRScanner"), {
+  ssr: false,
+});
 
 const LostPetsMap = dynamic(() => import("../../components/LostPetsMap"), {
   ssr: false,
@@ -67,7 +69,7 @@ const Timeline = () => {
 
 const FancyHello = () => {
   return (
-    <div className="flex bg-black/40 flex-col items-center justify-center rounded-3xl text-white py-0 mt-4 mb-4  ">
+    <div className="flex bg-black/40 flex-col items-center justify-center rounded-3xl text-white py-0 mt-4 mb-4  ">
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
