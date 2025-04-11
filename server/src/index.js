@@ -40,10 +40,10 @@ const allowedOrigin = NODE_ENV === 'development'
 console.log(`✅ Entorno: ${NODE_ENV}`);
 console.log(`🌍 Origen permitido: ${allowedOrigin}`);
 
+const cors = require("cors");
 app.use(cors({
-  origin: allowedOrigin,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  origin: "https://mascota-perdida-app-qkxp.vercel.app",
+  methods: ["GET", "POST"],
   credentials: true
 }));
 
