@@ -1,7 +1,7 @@
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors'); // Solo requerir 'cors' una vez
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan'); // Logging profesional
@@ -35,17 +35,28 @@ if (NODE_ENV === 'production') {
 // ✅ CORS según entorno
 const allowedOrigin = NODE_ENV === 'development'
   ? 'http://localhost:3000'
-  : process.env.CLIENT_URL;
+  : process.env.CLIENT_URL; // Asegúrate de que CLIENT_URL esté definido en tu .env para producción
 
 console.log(`✅ Entorno: ${NODE_ENV}`);
 console.log(`🌍 Origen permitido: ${allowedOrigin}`);
 
-const cors = require("cors");
-app.use(cors({
-  origin: "https://mascota-perdida-app-qkxp.vercel.app",
-  methods: ["GET", "POST"],
-  credentials: true
-}));
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (NODE_ENV === 'development' && origin === 'http://localhost:3000') {
+      callback(null, true);
+    } else if (NODE_ENV === 'production' && origin === process.env.CLIENT_URL) {
+      callback(null, true);
+    } else if (!origin) { // Permitir peticiones sin origin (como las de Postman o cURL)
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // ✅ Logging con Morgan
 if (NODE_ENV === 'development') {
