@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      <h1 className="-mt-14  rounded-full text-4xl font-bold text-blue-950 mb-8">
+    <div className="min-h-screen min-w-max  flex flex-col items-center justify-center p-4">
+      <h1 className="-mt-14 max-w-12px  rounded-full text-4xl font-bold text-blue-950 mb-8">
         <span className= "text-8xl font-thin text-blue-500 ">S</span>uper<span className="font-thin text-3xl" > -⁻QR-_</span><span className= "text-8xl font-thin text-green-500" >C</span>ollar
       </h1>
       
