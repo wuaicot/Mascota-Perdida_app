@@ -1,3 +1,13 @@
+   
+    /**
+     * 
+     * This file appears to be part of the "PROYECTO SUPER-COLLAR" project.
+     * The project may involve functionalities related to a "super collar," 
+     * potentially for tracking or managing lost pets.
+     * 
+     * Note: The file extension ".txt" suggests it might contain plain text 
+     * data or configuration details for the project.
+     */
     #PROYECTO SUPER-COLLAR# 
 MASCOTA-PERDIDA_APP/
 ├── client/
